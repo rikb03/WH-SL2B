@@ -1,0 +1,12 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP.NET Core service.
+
+version: '3.4'
+
+services:
+  dierentuin:
+    image: dierentuin
+    build:
+      context: .
+      dockerfile: Dierentuin/Dierentuin/Dockerfile
+    ports:
+      - 5075:5075
