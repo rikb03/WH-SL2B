@@ -1,0 +1,84 @@
+﻿@model Dierentuin.Models.Animal
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Animal</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Species" class="control-label"></label>
+                <input asp-for="Species" class="form-control" />
+                <span asp-validation-for="Species" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="size" class="control-label"></label>
+                @Html.DropDownList("size", Html.GetEnumSelectList(typeof(Animal.SizeType)), new { @class = "form-control" })
+                <span asp-validation-for="size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="dietary" class="control-label"></label>
+                @Html.DropDownList("dietary", Html.GetEnumSelectList(typeof(Animal.DietaryClassType)), new { @class = "form-control" })
+                <span asp-validation-for="dietary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="activityPattern" class="control-label"></label>
+                @Html.DropDownList("activityPattern", Html.GetEnumSelectList(typeof(Animal.ActivityPatternType)), new { @class = "form-control" })
+                <span asp-validation-for="activityPattern" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Prey" class="control-label"></label>
+                <input asp-for="Prey" class="form-control" />
+                <span asp-validation-for="Prey" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpaceRequirement" class="control-label"></label>
+                <input asp-for="SpaceRequirement" class="form-control" />
+                <span asp-validation-for="SpaceRequirement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="securityRequirement" class="control-label"></label>
+                @Html.DropDownList("securityRequirement", Html.GetEnumSelectList(typeof(Animal.SecurityRequirementType)), new { @class = "form-control" })
+                <span asp-validation-for="securityRequirement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImagePath" class="control-label"></label>
+                <input asp-for="ImagePath" class="form-control" />
+                <span asp-validation-for="ImagePath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnclosureId" class="control-label"></label>
+                <select asp-for="EnclosureId" class="form-control" asp-items="ViewBag.EnclosureId"></select>
+                <span asp-validation-for="EnclosureId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
