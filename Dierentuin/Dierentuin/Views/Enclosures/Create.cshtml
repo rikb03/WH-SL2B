@@ -1,0 +1,53 @@
+﻿@model Dierentuin.Models.Enclosure
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Enclosure</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="climate" class="control-label"></label>
+                @Html.DropDownList("climate", Html.GetEnumSelectList(typeof(Enclosure.ClimateType)), new { @class = "form-control" })
+                <span asp-validation-for="climate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="habitat" class="control-label"></label>
+                @Html.DropDownList("habitat", Html.GetEnumSelectList(typeof(Enclosure.HabitatType)), new { @class = "form-control" })
+                <span asp-validation-for="habitat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="securityLevel" class="control-label"></label>
+                @Html.DropDownList("securityLevel", Html.GetEnumSelectList(typeof(Enclosure.SecurityLevelType)), new { @class = "form-control" })
+                <span asp-validation-for="securityLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Size" class="control-label"></label>
+                <input asp-for="Size" class="form-control" />
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
