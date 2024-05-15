@@ -42,15 +42,15 @@ namespace Dierentuin.Models
 
         [Required]
         [EnumDataType(typeof(ClimateType))]
-        public ClimateType climate {  get; set; } // The climate of the enclosure
+        public ClimateType Climate {  get; set; } // The climate of the enclosure
 
         [Required]
         [EnumDataType(typeof(HabitatType))]
-        public HabitatType habitat { get; set;} // Habitat type of the enclosure
+        public HabitatType Habitat { get; set;} // Habitat type of the enclosure
 
         [Required]
         [EnumDataType(typeof(SecurityLevelType))]
-        public SecurityLevelType securityLevel { get; set; } // Security level of the enclosure
+        public SecurityLevelType SecurityLevel { get; set; } // Security level of the enclosure
 
         [Required]
         public double Size { get; set; } // Size of the enclosure in square meters

@@ -56,13 +56,13 @@ namespace Dierentuin.Models
 
         [Required]
         [EnumDataType(typeof(SizeType))]
-        public SizeType size { get; set; } // Size of the animal
+        public SizeType Size { get; set; } // Size of the animal
 
         [EnumDataType(typeof(DietaryClassType))]
-        public DietaryClassType dietary { get; set;} // Dietary need of the animal
+        public DietaryClassType Dietary { get; set;} // Dietary need of the animal
 
         [EnumDataType(typeof(ActivityPatternType))]
-        public ActivityPatternType activityPattern { get; set; } // Activity pattern of the animal
+        public ActivityPatternType ActivityPattern { get; set; } // Activity pattern of the animal
 
         [StringLength(255)]
         [Required]
@@ -79,15 +79,15 @@ namespace Dierentuin.Models
 
         [Required]
         [EnumDataType(typeof(SecurityRequirementType))]
-        public SecurityRequirementType securityRequirement { get; set;} // The required security of the animals enclosure
+        public SecurityRequirementType SecurityRequirement { get; set;} // The required security of the animals enclosure
 
         [StringLength(255)]
         public string? ImagePath { get; set; } // The path to the image of the animal (optional)
         
 
         // Foreign table data
-        public Category category { get; set; } // Animals category. From categories where id = categories_id
+        public Category Category { get; set; } // Animals category. From categories where id = categories_id
 
-        public Enclosure enclosure { get; set; } // Animals enclosure. From enclosures where id = enclosures_id
+        public Enclosure Enclosure { get; set; } // Animals enclosure. From enclosures where id = enclosures_id
     }
 }

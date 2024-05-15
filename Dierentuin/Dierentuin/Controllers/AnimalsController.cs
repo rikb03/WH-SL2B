@@ -22,7 +22,7 @@ namespace Dierentuin.Controllers
         // GET: Animals
         public async Task<IActionResult> Index()
         {
-            var dierentuinContext = _context.Animal.Include(a => a.category).Include(a => a.enclosure);
+            var dierentuinContext = _context.Animal.Include(a => a.Category).Include(a => a.Enclosure);
             return View(await dierentuinContext.ToListAsync());
         }
 
@@ -35,8 +35,8 @@ namespace Dierentuin.Controllers
             }
 
             var animal = await _context.Animal
-                .Include(a => a.category)
-                .Include(a => a.enclosure)
+                .Include(a => a.Category)
+                .Include(a => a.Enclosure)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (animal == null)
             {
@@ -137,8 +137,8 @@ namespace Dierentuin.Controllers
             }
 
             var animal = await _context.Animal
-                .Include(a => a.category)
-                .Include(a => a.enclosure)
+                .Include(a => a.Category)
+                .Include(a => a.Enclosure)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (animal == null)
             {

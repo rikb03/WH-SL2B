@@ -24,19 +24,19 @@
                 <span asp-validation-for="Species" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="size" class="control-label"></label>
-                @Html.DropDownList("size", Html.GetEnumSelectList(typeof(Animal.SizeType)), new { @class = "form-control" })
-                <span asp-validation-for="size" class="text-danger"></span>
+                <label asp-for="Size" class="control-label"></label>
+                @Html.DropDownList("Size", Html.GetEnumSelectList(typeof(Animal.SizeType)), new { @class = "form-control" })
+                <span asp-validation-for="Size" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="dietary" class="control-label"></label>
-                @Html.DropDownList("dietary", Html.GetEnumSelectList(typeof(Animal.DietaryClassType)), new { @class = "form-control" })
-                <span asp-validation-for="dietary" class="text-danger"></span>
+                <label asp-for="Dietary" class="control-label"></label>
+                @Html.DropDownList("Dietary", Html.GetEnumSelectList(typeof(Animal.DietaryClassType)), new { @class = "form-control" })
+                <span asp-validation-for="Dietary" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="activityPattern" class="control-label"></label>
-                @Html.DropDownList("activityPattern", Html.GetEnumSelectList(typeof(Animal.ActivityPatternType)), new { @class = "form-control" })
-                <span asp-validation-for="activityPattern" class="text-danger"></span>
+                <label asp-for="ActivityPattern" class="control-label"></label>
+                @Html.DropDownList("ActivityPattern", Html.GetEnumSelectList(typeof(Animal.ActivityPatternType)), new { @class = "form-control" })
+                <span asp-validation-for="ActivityPattern" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Prey" class="control-label"></label>
@@ -49,9 +49,9 @@
                 <span asp-validation-for="SpaceRequirement" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="securityRequirement" class="control-label"></label>
-                @Html.DropDownList("securityRequirement", Html.GetEnumSelectList(typeof(Animal.SecurityRequirementType)), new { @class = "form-control" })
-                <span asp-validation-for="securityRequirement" class="text-danger"></span>
+                <label asp-for="SecurityRequirement" class="control-label"></label>
+                @Html.DropDownList("SecurityRequirement", Html.GetEnumSelectList(typeof(Animal.SecurityRequirementType)), new { @class = "form-control" })
+                <span asp-validation-for="SecurityRequirement" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ImagePath" class="control-label"></label>
