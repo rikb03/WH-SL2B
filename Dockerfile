@@ -8,7 +8,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG configuration=Release
 WORKDIR /src
 COPY ["Dierentuin/Dierentuin/Dierentuin.csproj", "Dierentuin/Dierentuin/"]
-RUN dotnet restore "Dierentuin\Dierentuin\Dierentuin.csproj"
 COPY . .
 WORKDIR "/src/Dierentuin/Dierentuin"
 RUN dotnet build "Dierentuin.csproj" -c $configuration -o /app/build
