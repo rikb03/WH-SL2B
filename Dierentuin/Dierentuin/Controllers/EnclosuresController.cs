@@ -57,7 +57,7 @@ namespace Dierentuin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,climate,habitat,securityLevel,Size")] Enclosure enclosure)
+        public async Task<IActionResult> Create([Bind("Id,Name,Climate,Habitat,SecurityLevel,Size")] Enclosure enclosure)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace Dierentuin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,climate,habitat,securityLevel,Size")] Enclosure enclosure)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Climate,Habitat,SecurityLevel,Size")] Enclosure enclosure)
         {
             if (id != enclosure.Id)
             {
