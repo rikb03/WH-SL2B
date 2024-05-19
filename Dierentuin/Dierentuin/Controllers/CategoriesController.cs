@@ -34,13 +34,12 @@ namespace Dierentuin.Controllers
             }
 
             var category = await _context.Category
+                .Include(c => c.Animals)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
-
-            ViewBag.animals = await _context.Animal.Where(a => a.CategoryId == id).ToListAsync();
 
             return View(category);
         }
@@ -127,13 +126,12 @@ namespace Dierentuin.Controllers
             }
 
             var category = await _context.Category
+                .Include(c => c.Animals)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
-
-            ViewBag.animals = await _context.Animal.Where(a => a.CategoryId == id).ToListAsync();
 
             return View(category);
         }

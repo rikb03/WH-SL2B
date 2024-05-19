@@ -1,5 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Dierentuin.Controllers;
+using Microsoft.CodeAnalysis.CSharp;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Dierentuin.Models;
 
 namespace Dierentuin.Models
 {
@@ -17,5 +20,7 @@ namespace Dierentuin.Models
         [StringLength(255)]
         [Required]
         public string Description { get; set; } // Description of the category
+
+        public virtual ICollection<Animal> Animals { get; set; }  // List of animals in the category
     }
 }
