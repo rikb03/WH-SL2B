@@ -22,7 +22,6 @@ namespace Dierentuin.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            ViewBag.AnimalCount = await _context.Category.Include(c => c.Animals).CountAsync(); // Counts all the animals in this category
             return View(await _context.Category.ToListAsync());
         }
 
@@ -75,11 +74,7 @@ namespace Dierentuin.Controllers
                 return NotFound();
             }
 
-            //var category = await _context.Category.FindAsync(id);
-            var category = await _context.Category
-                .Include(c => c.Animals) // Include related Animals
-                .FirstOrDefaultAsync(m => m.Id == id);
-
+            var category = await _context.Category.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
