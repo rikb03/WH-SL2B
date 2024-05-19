@@ -60,7 +60,7 @@ namespace Dierentuin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Species,CategoryId,size,dietary,activityPattern,Prey,EnclosureId,SpaceRequirement,securityRequirement,ImagePath")] Animal animal)
+        public async Task<IActionResult> Create([Bind("Id,Name,Species,CategoryId,Size,Dietary,ActivityPattern,Prey,EnclosureId,SpaceRequirement,SecurityRequirement,ImagePath")] Animal animal)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace Dierentuin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Species,CategoryId,size,dietary,activityPattern,Prey,EnclosureId,SpaceRequirement,securityRequirement,ImagePath")] Animal animal)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Species,CategoryId,Size,Dietary,ActivityPattern,Prey,EnclosureId,SpaceRequirement,SecurityRequirement,ImagePath")] Animal animal)
         {
             if (id != animal.Id)
             {
