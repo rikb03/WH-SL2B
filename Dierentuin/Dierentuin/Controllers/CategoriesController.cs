@@ -22,7 +22,7 @@ namespace Dierentuin.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Category.ToListAsync());
+            return View(await _context.Category.Include(c => c.Animals).ToListAsync());
         }
 
         // GET: Categories/Details/5
