@@ -20,9 +20,21 @@ namespace Dierentuin.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
-            return View(await _context.Category.Include(c => c.Animals).ToListAsync());
+            if (_context.Category == null)
+            {
+                return Problem("Entity set 'DierentuinContext.Category' is null.");
+            }
+
+            var category = _context.Category.Select(c => c);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                category = category.Where(c => c.Name!.Contains(search));
+            }
+
+            return View(await category.Include(c => c.Animals).ToListAsync());
         }
 
         // GET: Categories/Details/5
