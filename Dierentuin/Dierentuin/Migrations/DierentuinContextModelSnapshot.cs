@@ -29,16 +29,21 @@ namespace Dierentuin.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ActivityPattern")
+                        .HasColumnType("int");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int")
                         .HasColumnName("categories_id");
+
+                    b.Property<int>("Dietary")
+                        .HasColumnType("int");
 
                     b.Property<int>("EnclosureId")
                         .HasColumnType("int")
                         .HasColumnName("enclosures_id");
 
                     b.Property<string>("ImagePath")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -52,6 +57,12 @@ namespace Dierentuin.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int>("SecurityRequirement")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
+
                     b.Property<double>("SpaceRequirement")
                         .HasColumnType("float")
                         .HasColumnName("spaceRequirement");
@@ -60,18 +71,6 @@ namespace Dierentuin.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("activityPattern")
-                        .HasColumnType("int");
-
-                    b.Property<int>("dietary")
-                        .HasColumnType("int");
-
-                    b.Property<int>("securityRequirement")
-                        .HasColumnType("int");
-
-                    b.Property<int>("size")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -113,22 +112,22 @@ namespace Dierentuin.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Climate")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Habitat")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int>("SecurityLevel")
+                        .HasColumnType("int");
+
                     b.Property<double>("Size")
                         .HasColumnType("float");
-
-                    b.Property<int>("climate")
-                        .HasColumnType("int");
-
-                    b.Property<int>("habitat")
-                        .HasColumnType("int");
-
-                    b.Property<int>("securityLevel")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -137,21 +136,26 @@ namespace Dierentuin.Migrations
 
             modelBuilder.Entity("Dierentuin.Models.Animal", b =>
                 {
-                    b.HasOne("Dierentuin.Models.Category", "category")
-                        .WithMany()
+                    b.HasOne("Dierentuin.Models.Category", "Category")
+                        .WithMany("Animals")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Dierentuin.Models.Enclosure", "enclosure")
+                    b.HasOne("Dierentuin.Models.Enclosure", "Enclosure")
                         .WithMany("Animal")
                         .HasForeignKey("EnclosureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("category");
+                    b.Navigation("Category");
 
-                    b.Navigation("enclosure");
+                    b.Navigation("Enclosure");
+                });
+
+            modelBuilder.Entity("Dierentuin.Models.Category", b =>
+                {
+                    b.Navigation("Animals");
                 });
 
             modelBuilder.Entity("Dierentuin.Models.Enclosure", b =>
