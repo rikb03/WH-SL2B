@@ -103,6 +103,11 @@ namespace Dierentuin.Models
         public string FeedingTime()
         {
             throw new NotImplementedException();
-        } 
+        }
+
+        public string CheckConstraint()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
