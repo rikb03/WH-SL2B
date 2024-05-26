@@ -36,5 +36,32 @@ namespace UnitTests
 
             Assert.Equal("Always active", result);
         }
+
+        public void Sunrise_DiurnalAnimal_ShouldGoingToSleep()
+        {
+            Animal animal = new Animal() { ActivityPattern = Animal.ActivityPatternType.Diurnal };
+
+            var result = animal.Sunrise();
+
+            Assert.Equal("Waking up", result);
+        }
+
+        public void Sunrise_NocturnalAnimal_ShouldWakingUp()
+        {
+            Animal animal = new Animal() { ActivityPattern = Animal.ActivityPatternType.Nocturnal };
+
+            var result = animal.Sunrise();
+
+            Assert.Equal("Going to sleep", result);
+        }
+
+        public void Sunrise_CathermeralAnimal_ShouldBeAlwaysActive()
+        {
+            Animal animal = new Animal() { ActivityPattern = Animal.ActivityPatternType.Cathermeral };
+
+            var result = animal.Sunrise(); 
+
+            Assert.Equal("Always active", result);
+        }
     }
 }
