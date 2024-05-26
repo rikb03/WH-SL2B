@@ -55,22 +55,22 @@ namespace Dierentuin.Models
         [Required]
         public double Size { get; set; } // Size of the enclosure in square meters
 
-        public string Sunset()
+        public Dictionary<string, string> Sunset()
         {
             throw new NotImplementedException();
         }
 
-        public string Sunrise()
+        public Dictionary<string, string> Sunrise()
         {
             throw new NotImplementedException();
         }
 
-        public string FeedingTime()
+        public Dictionary<string, string> FeedingTime()
         {
             throw new NotImplementedException();
         }
 
-        public string CheckConstraint()
+        public Dictionary<string, string> CheckConstraint()
         {
             throw new NotImplementedException();
         }
