@@ -66,7 +66,7 @@ namespace Dierentuin.Models
 
         [StringLength(255)]
         [Required]
-        public string Prey { get; set; } // Prey of the animal
+        public Category Prey { get; set; } // Prey of the animal
 
         [Column("enclosures_id")]
         [Required]
@@ -89,5 +89,20 @@ namespace Dierentuin.Models
         public Category Category { get; set; } // Animals category. From categories where id = categories_id
 
         public Enclosure Enclosure { get; set; } // Animals enclosure. From enclosures where id = enclosures_id
+
+        public string Sunset()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Sunrise()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string FeedingTime()
+        {
+            throw new NotImplementedException();
+        } 
     }
 }
