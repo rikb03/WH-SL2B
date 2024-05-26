@@ -1,4 +1,5 @@
 ﻿using Dierentuin.Models;
+using NuGet.ContentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +66,58 @@ namespace UnitTests
             Enclosure enclosure = new Enclosure();
 
             var result = enclosure.Sunset();
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void FeedingTime_AnimalsWithPreyInEnclosure_ShouldEatPrey()
+        {
+            Category felines = new Category();
+            Category canines = new Category();
+            Enclosure enclosure = new Enclosure()
+            {
+                Animal = new List<Animal>
+                {
+                    new Animal { Name = "Kees"},
+                    new Animal { Name = "Piet", Prey = canines, Category = felines },
+                    new Animal { Name = "Jan", Category = canines}
+                }
+            };
+
+            var result = enclosure.FeedingTime();
+
+            Assert.Equal("Kees eats given food", result["Kees"]);
+            Assert.Equal("Piet eats Jan", result["Piet"]);
+            Assert.Null(result["Jan"]); // Jan is eaten :(
+        }
+
+        [Fact]
+        public void FeedingTime_AnimalsWithNoPreyInEnclosure_NoneShouldEatPrey()
+        {
+            Category felines = new Category();
+            Category canines = new Category();
+            Enclosure enclosure = new Enclosure()
+            {
+                Animal = new List<Animal>
+                {
+                    new Animal { Name = "Piet", Category = felines, Prey = canines },
+                    new Animal { Name = "Jan", Category = felines }
+                }
+            };
+
+            var result = enclosure.FeedingTime();
+
+            Assert.Equal("Piet eats given food", result["Piet"]);
+            Assert.Equal("Jan eats given food", result["Jan"]);
+        }
+
+        [Fact]
+        public void FeedingTime_EmptyEnclosure_ShouldReturnNull()
+        {
+            Enclosure enclosure = new Enclosure();
+
+            var result = enclosure.FeedingTime();
 
             Assert.Null(result);
         }
