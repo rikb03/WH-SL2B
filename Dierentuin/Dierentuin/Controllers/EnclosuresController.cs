@@ -169,4 +169,10 @@ namespace Dierentuin.Controllers
             return _context.Enclosure.Any(e => e.Id == id);
         }
     }
+
+    public EnclosureController()
+    {
+        _animalService = new Animal();
+    }
 }
+
