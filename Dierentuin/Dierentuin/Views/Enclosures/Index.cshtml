@@ -11,10 +11,10 @@
 </p>
 
 <form asp-controller="Enclosures" asp-action="Index" method="get">
-	<p>
-		Search: <input type="text" name="SearchString">
-		<input type="submit" value="Filter" />
-	</p>
+    <p>
+        Name: <input type="text" name="search" />
+        <input type="submit" value="Filter" />
+    </p>
 </form>
 <table class="table">
     <thead>
@@ -62,5 +62,31 @@
             </td>
         </tr>
 }
+
+@* <h1>Sunrise</h1>
+
+<h2>Animals Waking Up</h2>
+        @foreach (var enclosure in Model.WakingUpEnclosures)
+        {
+        <h3>@enclosure.Name</h3>
+        <ul>
+                @foreach (var animal in enclosure.Animals)
+                {
+                    <li>@animal.Name</li>
+                }
+        </ul>
+        }
+
+<h2>Animals Going to Sleep</h2>
+        @foreach (var enclosure in Model.GoingToSleepEnclosures)
+        {
+        <h3>@enclosure.Name</h3>
+        <ul>
+                @foreach (var animal in enclosure.Animals)
+                {
+                    <li>@animal.Name</li>
+                }
+        </ul>
+        } *@
     </tbody>
 </table>

@@ -21,9 +21,21 @@ namespace Dierentuin.Controllers
         }
 
         // GET: Enclosures
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
-            return View(await _context.Enclosure.ToListAsync());
+            if (_context.Enclosure == null)
+            {
+                return Problem("Entity set 'DierentuinContext.Enclosure' is null.");
+            }
+
+            var enclosure = _context.Enclosure.Select(c => c);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                enclosure = enclosure.Where(c => c.Name!.Contains(search));
+            }
+
+            return View(await enclosure.Include(c => c.Animals).ToListAsync());
         }
 
         // GET: Enclosures/Details/5
@@ -134,9 +146,6 @@ namespace Dierentuin.Controllers
             {
                 return NotFound();
             }
-
-           // ViewBag.animals = await _context.Animal.Where(a => a.EnclosureId == id).ToListAsync();
-
             return View(enclosure);
         }
 

@@ -74,5 +74,10 @@ namespace Dierentuin.Models
         {
             throw new NotImplementedException();
         }
+        public class SunriseViewModel
+        {
+            public List<Enclosure> WakingUpEnclosures { get; set; }
+            public List<Enclosure> GoingToEnclosures { get; set; }
+        }
     }
 }
