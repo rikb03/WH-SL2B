@@ -1,6 +1,8 @@
-﻿using System;
+﻿using NuGet.Common;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static Dierentuin.Models.Enclosure;
 
 namespace Dierentuin.Models
 {
@@ -32,13 +34,6 @@ namespace Dierentuin.Models
             Diurnal,
             Nocturnal,
             Cathemeral
-        };
-
-        public enum SecurityRequirementType // Security enum
-        {
-            Low,
-            Medium,
-            High
         };
 
         // Database fields
@@ -85,7 +80,7 @@ namespace Dierentuin.Models
 
         [Required]
         [EnumDataType(typeof(SecurityRequirementType))]
-        public SecurityRequirementType SecurityRequirement { get; set; } // The required security of the animal's enclosure
+        public SecurityLevelType SecurityRequirement { get; set; } // The required security of the animal's enclosure
 
         [StringLength(255)]
         public string? ImagePath { get; set; } // The path to the image of the animal (optional)
@@ -133,11 +128,27 @@ namespace Dierentuin.Models
         }
 
         // Method to check constraints
-        public string CheckConstraint()
+        public string CheckConstraint(Enclosure enclosure)
         {
+            double totalSpaceRequired = 0;
+            bool isSpaceSufficient = false; // Example constraint
+
+            foreach (Animal animal in enclosure.Animal) 
+            {
+                totalSpaceRequired += animal.SpaceRequirement;
+            };
+
+            if (totalSpaceRequired > enclosure.Size)
+            {
+                isSpaceSufficient = false;
+            } 
+            else
+            {
+                isSpaceSufficient = true;
+            }
+
             // Placeholder example to check some constraints
-            bool isSpaceSufficient = SpaceRequirement >= 10; // Example constraint
-            bool isSecurityAdequate = SecurityRequirement != SecurityRequirementType.Low; // Example constraint
+            bool isSecurityAdequate = SecurityRequirement == enclosure.SecurityLevel; // Example constraint
 
             return $"Space sufficient: {isSpaceSufficient}, Security adequate: {isSecurityAdequate}";
         }
