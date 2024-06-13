@@ -38,7 +38,7 @@ namespace Dierentuin.Models
         public string Name { get; set; } // Name of the enclosure
 
         //[Required]
-        public List<Animal> Animal { get; set; } // List of animals in the enclosure
+        public virtual ICollection<Animal> Animals { get; set; }  // List of animals in the category
 
         [Required]
         [EnumDataType(typeof(ClimateType))]

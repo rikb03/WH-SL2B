@@ -128,13 +128,14 @@ namespace Dierentuin.Controllers
             }
 
             var enclosure = await _context.Enclosure
+                .Include(c => c.Animals)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (enclosure == null)
             {
                 return NotFound();
             }
 
-            ViewBag.animals = await _context.Animal.Where(a => a.EnclosureId == id).ToListAsync();
+           // ViewBag.animals = await _context.Animal.Where(a => a.EnclosureId == id).ToListAsync();
 
             return View(enclosure);
         }
