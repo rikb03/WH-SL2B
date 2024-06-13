@@ -31,9 +31,9 @@ namespace Dierentuin.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    climate = table.Column<int>(type: "int", nullable: false),
-                    habitat = table.Column<int>(type: "int", nullable: false),
-                    securityLevel = table.Column<int>(type: "int", nullable: false),
+                    Climate = table.Column<int>(type: "int", nullable: false),
+                    Habitat = table.Column<int>(type: "int", nullable: false),
+                    SecurityLevel = table.Column<int>(type: "int", nullable: false),
                     Size = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
@@ -49,15 +49,15 @@ namespace Dierentuin.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Species = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    categories_id = table.Column<int>(type: "int", nullable: false),
-                    size = table.Column<int>(type: "int", nullable: false),
-                    dietary = table.Column<int>(type: "int", nullable: false),
-                    activityPattern = table.Column<int>(type: "int", nullable: false),
+                    Size = table.Column<int>(type: "int", nullable: false),
+                    Dietary = table.Column<int>(type: "int", nullable: false),
+                    ActivityPattern = table.Column<int>(type: "int", nullable: false),
                     Prey = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    enclosures_id = table.Column<int>(type: "int", nullable: false),
                     spaceRequirement = table.Column<double>(type: "float", nullable: false),
-                    securityRequirement = table.Column<int>(type: "int", nullable: false),
-                    ImagePath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                    SecurityRequirement = table.Column<int>(type: "int", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    categories_id = table.Column<int>(type: "int", nullable: false),
+                    enclosures_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

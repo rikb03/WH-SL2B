@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Dierentuin.Data;
 using Dierentuin.Models;
+using System.Drawing.Text;
+using System.Text.RegularExpressions;
 
 namespace Dierentuin.Controllers
 {
@@ -86,11 +88,29 @@ namespace Dierentuin.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category.FindAsync(id);
+            var category = await _context.Category
+                .Include(c => c.Animals)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
+
+            List<Animal> animals = await _context.Animal.Include(a => a.Enclosure).ToListAsync();
+            List<SelectListItem> animalSelectList = new List<SelectListItem>();
+            List<string> animalSelected = new List<string>();
+
+            foreach (Animal animal in animals)
+            {
+                SelectListGroup group = null;
+                if (animal.Enclosure != null) { group = new SelectListGroup { Name = animal.Enclosure.Name }; }
+                if (animal.CategoryId == id) { animalSelected.Add(animal.Id.ToString()); }
+                animalSelectList.Add(new SelectListItem() { Value = animal.Id.ToString(), Text = animal.Name, Group = group });
+            }
+
+            ViewBag.animalSelected = animalSelected;
+            ViewBag.animalsList = animalSelectList;
+
             return View(category);
         }
 
