@@ -66,8 +66,8 @@ namespace Dierentuin.Models
         [EnumDataType(typeof(ActivityPatternType))]
         public ActivityPatternType ActivityPattern { get; set; } // Activity pattern of the animal
 
-        [Required]
-        public int Prey { get; set; } // Prey of the animal
+        [AllowNull]
+        public int? Prey { get; set; } // Prey of the animal
 
         [Column("enclosures_id")]
         [AllowNull]
@@ -81,9 +81,6 @@ namespace Dierentuin.Models
         [Required]
         [EnumDataType(typeof(SecurityLevelType))]
         public SecurityLevelType SecurityRequirement { get; set; } // The required security of the animal's enclosure
-
-        [StringLength(255)]
-        public string? ImagePath { get; set; } // The path to the image of the animal (optional)
 
         // Foreign table data
         public Category Category { get; set; } // Animal's category. From categories where id = categories_id
