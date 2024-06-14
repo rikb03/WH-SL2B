@@ -1,5 +1,4 @@
-﻿using NuGet.Common;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
@@ -35,6 +34,13 @@ namespace Dierentuin.Models
             Diurnal,
             Nocturnal,
             Cathemeral
+        };
+
+        public enum SecurityRequirementType // Security enum
+        {
+            Low,
+            Medium,
+            High
         };
 
         // Database fields
@@ -111,18 +117,8 @@ namespace Dierentuin.Models
         }
 
         // Method to determine the feeding time
-        public string FeedingTime(Enclosure enclosure, Category? category)
+        public string FeedingTime()
         {
-            if (category != null)
-            {
-                foreach (Animal animal in enclosure.Animal)
-                {
-                    if (animal.Category == category)
-                    {
-                        return $"{Name} eats {Prey}.";
-                    }
-                }
-            }
             return Dietary switch
             {
                 DietaryClassType.Carnivore => $"{Name} eats meat.",
@@ -135,27 +131,11 @@ namespace Dierentuin.Models
         }
 
         // Method to check constraints
-        public string CheckConstraint(Enclosure enclosure)
+        public string CheckConstraint()
         {
-            double totalSpaceRequired = 0;
-            bool isSpaceSufficient = false; // Example constraint
-
-            foreach (Animal animal in enclosure.Animal) 
-            {
-                totalSpaceRequired += animal.SpaceRequirement;
-            };
-
-            if (totalSpaceRequired > enclosure.Size)
-            {
-                isSpaceSufficient = false;
-            } 
-            else
-            {
-                isSpaceSufficient = true;
-            }
-
             // Placeholder example to check some constraints
-            bool isSecurityAdequate = SecurityRequirement == enclosure.SecurityLevel; // Example constraint
+            bool isSpaceSufficient = SpaceRequirement >= 10; // Example constraint
+            bool isSecurityAdequate = SecurityRequirement != SecurityRequirementType.Low; // Example constraint
 
             return $"Space sufficient: {isSpaceSufficient}, Security adequate: {isSecurityAdequate}";
         }
