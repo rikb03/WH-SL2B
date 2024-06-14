@@ -253,7 +253,8 @@ namespace Dierentuin.Controllers
             List<string> FeedingTime = new List<string>();
             foreach (Animal animal in enclosure.Animals)
             {
-                string Result = animal.FeedingTime(enclosure, animal.Category);
+                Category prey = await _context.Category.FirstOrDefaultAsync(c => c.Id == animal.Prey);
+                string Result = animal.FeedingTime(animal.Enclosure, prey, animal);
                 FeedingTime.Add(Result);
             }
 

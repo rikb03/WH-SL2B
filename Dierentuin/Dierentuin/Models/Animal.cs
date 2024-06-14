@@ -111,15 +111,16 @@ namespace Dierentuin.Models
         }
 
         // Method to determine the feeding time
-        public string FeedingTime(Enclosure enclosure, Category? category)
+        public string FeedingTime(Enclosure enclosure, Category? category, Animal animal)
         {
             if (category != null)
             {
-                foreach (Animal animal in enclosure.Animals)
+                foreach (Animal prey in enclosure.Animals)
                 {
-                    if (animal.Category == category)
+                    if (prey.Category == category && animal != prey)
                     {
-                        return $"{Name} eats {Prey}.";
+
+                        return $"{animal.Name} eats {prey.Name}.";
                     }
                 }
             }
