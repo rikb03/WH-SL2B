@@ -20,7 +20,7 @@ namespace Dierentuin.Controllers
         }
 
         // GET: Animals
-        public async Task<IActionResult> Index(string searchString, string species, Animal.SizeType? size, Animal.DietaryClassType? dietary, Animal.ActivityPatternType? activityPattern, int? prey, Enclosure.SecurityLevelType? securityRequirement)
+        public async Task<IActionResult> Index(string searchString, string species, Animal.SizeType? size, Animal.DietaryClassType? dietary, Animal.ActivityPatternType? activityPattern, string prey, Animal.SecurityRequirementType? securityRequirement)
         {
             var animals = from a in _context.Animal.Include(a => a.Category).Include(a => a.Enclosure)
                           select a;
@@ -50,9 +50,9 @@ namespace Dierentuin.Controllers
                 animals = animals.Where(a => a.ActivityPattern == activityPattern.Value);
             }
 
-            if (prey != null)
+            if (!String.IsNullOrEmpty(prey))
             {
-                animals = animals.Where(a => a.Prey == prey);
+                animals = animals.Where(a => a.Prey.Contains(prey));
             }
 
             if (securityRequirement.HasValue)
@@ -89,7 +89,6 @@ namespace Dierentuin.Controllers
             Animal animal = new Animal();
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Description");
             ViewData["EnclosureId"] = new SelectList(_context.Set<Enclosure>(), "Id", "Name");
-
             return View(animal);
         }
 
@@ -217,7 +216,7 @@ namespace Dierentuin.Controllers
             }
 
             ViewBag.Message = animal.Sunrise();
-            return View("Details", animal);
+            return View(animal);
         }
 
         // GET: Animals/Sunset/5
@@ -235,43 +234,43 @@ namespace Dierentuin.Controllers
             }
 
             ViewBag.Message = animal.Sunset();
-            return View("Details", animal);
+            return View(animal);
         }
 
         // GET: Animals/FeedingTime/5
-        public async Task<IActionResult> FeedingTime(int id)
+        public async Task<IActionResult> FeedingTime(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Animal animal = await _context.Animal.Include(a => a.Enclosure).FirstOrDefaultAsync(a => a.Id == id);
+            var animal = await _context.Animal.FindAsync(id);
             if (animal == null)
             {
                 return NotFound();
             }
-            Category prey = await _context.Category.FirstOrDefaultAsync(c => c.Id == animal.Prey);
-            ViewBag.Message = animal.FeedingTime(animal.Enclosure, prey);
-            return View("Details", animal);
+
+            ViewBag.Message = animal.FeedingTime();
+            return View(animal);
         }
 
         // GET: Animals/CheckConstraint/5
-        public async Task<IActionResult> CheckConstraint(int id)
+        public async Task<IActionResult> CheckConstraint(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var animal = await _context.Animal.Include(a => a.Enclosure).FirstOrDefaultAsync(a => a.Id == id);
+            var animal = await _context.Animal.FindAsync(id);
             if (animal == null)
             {
                 return NotFound();
             }
 
-            ViewBag.Message = animal.CheckConstraint(animal.Enclosure);
-            return View("Details", animal);
+            ViewBag.Message = animal.CheckConstraint();
+            return View(animal);
         }
     }
 }

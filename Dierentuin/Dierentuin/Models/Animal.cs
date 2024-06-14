@@ -1,8 +1,6 @@
-﻿using NuGet.Common;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Dierentuin.Models.Enclosure;
 
 namespace Dierentuin.Models
 {
@@ -36,6 +34,13 @@ namespace Dierentuin.Models
             Cathemeral
         };
 
+        public enum SecurityRequirementType // Security enum
+        {
+            Low,
+            Medium,
+            High
+        };
+
         // Database fields
         [Key]
         public int Id { get; set; } // Primary key id
@@ -65,8 +70,9 @@ namespace Dierentuin.Models
         [EnumDataType(typeof(ActivityPatternType))]
         public ActivityPatternType ActivityPattern { get; set; } // Activity pattern of the animal
 
+        [StringLength(255)]
         [Required]
-        public int Prey { get; set; } // Prey of the animal
+        public string Prey { get; set; } // Prey of the animal
 
         [Column("enclosures_id")]
         [Required]
@@ -78,8 +84,8 @@ namespace Dierentuin.Models
         public double SpaceRequirement { get; set; } // The animal's required space in square meters
 
         [Required]
-        [EnumDataType(typeof(SecurityLevelType))]
-        public SecurityLevelType SecurityRequirement { get; set; } // The required security of the animal's enclosure
+        [EnumDataType(typeof(SecurityRequirementType))]
+        public SecurityRequirementType SecurityRequirement { get; set; } // The required security of the animal's enclosure
 
         [StringLength(255)]
         public string? ImagePath { get; set; } // The path to the image of the animal (optional)
@@ -113,18 +119,8 @@ namespace Dierentuin.Models
         }
 
         // Method to determine the feeding time
-        public string FeedingTime(Enclosure enclosure, Category? category)
+        public string FeedingTime()
         {
-            if (category != null)
-            {
-                foreach (Animal animal in enclosure.Animal)
-                {
-                    if (animal.Category == category)
-                    {
-                        return $"{Name} eats {Prey}.";
-                    }
-                }
-            }
             return Dietary switch
             {
                 DietaryClassType.Carnivore => $"{Name} eats meat.",
@@ -137,27 +133,11 @@ namespace Dierentuin.Models
         }
 
         // Method to check constraints
-        public string CheckConstraint(Enclosure enclosure)
+        public string CheckConstraint()
         {
-            double totalSpaceRequired = 0;
-            bool isSpaceSufficient = false; // Example constraint
-
-            foreach (Animal animal in enclosure.Animal) 
-            {
-                totalSpaceRequired += animal.SpaceRequirement;
-            };
-
-            if (totalSpaceRequired > enclosure.Size)
-            {
-                isSpaceSufficient = false;
-            } 
-            else
-            {
-                isSpaceSufficient = true;
-            }
-
             // Placeholder example to check some constraints
-            bool isSecurityAdequate = SecurityRequirement == enclosure.SecurityLevel; // Example constraint
+            bool isSpaceSufficient = SpaceRequirement >= 10; // Example constraint
+            bool isSecurityAdequate = SecurityRequirement != SecurityRequirementType.Low; // Example constraint
 
             return $"Space sufficient: {isSpaceSufficient}, Security adequate: {isSecurityAdequate}";
         }
