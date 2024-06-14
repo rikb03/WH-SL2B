@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dierentuin.Migrations
 {
     [DbContext(typeof(DierentuinContext))]
-    [Migration("20240521115132_Init")]
+    [Migration("20240613210407_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -55,10 +55,9 @@ namespace Dierentuin.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("Prey")
-                        .IsRequired()
+                    b.Property<int>("Prey")
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("int");
 
                     b.Property<int>("SecurityRequirement")
                         .HasColumnType("int");

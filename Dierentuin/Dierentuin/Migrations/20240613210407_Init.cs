@@ -49,15 +49,15 @@ namespace Dierentuin.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Species = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    categories_id = table.Column<int>(type: "int", nullable: false),
                     Size = table.Column<int>(type: "int", nullable: false),
                     Dietary = table.Column<int>(type: "int", nullable: false),
                     ActivityPattern = table.Column<int>(type: "int", nullable: false),
-                    Prey = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Prey = table.Column<int>(type: "int", nullable: false),
+                    enclosures_id = table.Column<int>(type: "int", nullable: false),
                     spaceRequirement = table.Column<double>(type: "float", nullable: false),
                     SecurityRequirement = table.Column<int>(type: "int", nullable: false),
-                    ImagePath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    categories_id = table.Column<int>(type: "int", nullable: false),
-                    enclosures_id = table.Column<int>(type: "int", nullable: false)
+                    ImagePath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {

@@ -52,10 +52,15 @@ namespace Dierentuin.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("Prey")
-                        .IsRequired()
+                    b.Property<int>("Prey")
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("int");
+
+                    b.Property<int>("SecurityRequirement")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
 
                     b.Property<int>("SecurityRequirement")
                         .HasColumnType("int");
