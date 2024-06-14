@@ -65,9 +65,8 @@ namespace Dierentuin.Models
         [EnumDataType(typeof(ActivityPatternType))]
         public ActivityPatternType ActivityPattern { get; set; } // Activity pattern of the animal
 
-        [StringLength(255)]
         [Required]
-        public string Prey { get; set; } // Prey of the animal
+        public int Prey { get; set; } // Prey of the animal
 
         [Column("enclosures_id")]
         [Required]
@@ -79,7 +78,7 @@ namespace Dierentuin.Models
         public double SpaceRequirement { get; set; } // The animal's required space in square meters
 
         [Required]
-        [EnumDataType(typeof(SecurityRequirementType))]
+        [EnumDataType(typeof(SecurityLevelType))]
         public SecurityLevelType SecurityRequirement { get; set; } // The required security of the animal's enclosure
 
         [StringLength(255)]
@@ -114,8 +113,18 @@ namespace Dierentuin.Models
         }
 
         // Method to determine the feeding time
-        public string FeedingTime()
+        public string FeedingTime(Enclosure enclosure, Category? category)
         {
+            if (category != null)
+            {
+                foreach (Animal animal in enclosure.Animal)
+                {
+                    if (animal.Category == category)
+                    {
+                        return $"{Name} eats {Prey}.";
+                    }
+                }
+            }
             return Dietary switch
             {
                 DietaryClassType.Carnivore => $"{Name} eats meat.",
