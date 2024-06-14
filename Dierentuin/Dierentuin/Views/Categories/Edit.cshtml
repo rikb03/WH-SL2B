@@ -24,6 +24,10 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Animals" class="control-label">Animals - Select multiple by holding ctrl</label>
+                <select id="animals" name="animals" asp-items="ViewBag.animalsList" multiple class="form-select" aria-label="multiple select example" id="Animals"></select>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
