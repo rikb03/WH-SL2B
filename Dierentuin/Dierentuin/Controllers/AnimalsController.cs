@@ -96,7 +96,7 @@ namespace Dierentuin.Controllers
         // POST: Animals/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Species,CategoryId,Size,Dietary,ActivityPattern,Prey,EnclosureId,SpaceRequirement,SecurityRequirement,ImagePath")] Animal animal)
+        public async Task<IActionResult> Create([Bind("Id,Name,Species,CategoryId,Size,Dietary,ActivityPattern,Prey,EnclosureId,SpaceRequirement,SecurityRequirement")] Animal animal)
         {
             if (ModelState.IsValid)
             {
@@ -130,7 +130,7 @@ namespace Dierentuin.Controllers
         // POST: Animals/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Species,CategoryId,Size,Dietary,ActivityPattern,Prey,EnclosureId,SpaceRequirement,SecurityRequirement,ImagePath")] Animal animal)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Species,CategoryId,Size,Dietary,ActivityPattern,Prey,EnclosureId,SpaceRequirement,SecurityRequirement")] Animal animal)
         {
             if (id != animal.Id)
             {

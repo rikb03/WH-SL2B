@@ -49,15 +49,14 @@ namespace Dierentuin.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Species = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    categories_id = table.Column<int>(type: "int", nullable: false),
+                    categories_id = table.Column<int>(type: "int", nullable: true),
                     Size = table.Column<int>(type: "int", nullable: false),
                     Dietary = table.Column<int>(type: "int", nullable: false),
                     ActivityPattern = table.Column<int>(type: "int", nullable: false),
-                    Prey = table.Column<int>(type: "int", nullable: false),
-                    enclosures_id = table.Column<int>(type: "int", nullable: false),
+                    Prey = table.Column<int>(type: "int", nullable: true),
+                    enclosures_id = table.Column<int>(type: "int", nullable: true),
                     spaceRequirement = table.Column<double>(type: "float", nullable: false),
-                    SecurityRequirement = table.Column<int>(type: "int", nullable: false),
-                    ImagePath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                    SecurityRequirement = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,14 +65,12 @@ namespace Dierentuin.Migrations
                         name: "FK_animals_categories_categories_id",
                         column: x => x.categories_id,
                         principalTable: "categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_animals_enclosures_enclosures_id",
                         column: x => x.enclosures_id,
                         principalTable: "enclosures",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

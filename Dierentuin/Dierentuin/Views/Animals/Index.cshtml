@@ -91,9 +91,6 @@
                 @Html.DisplayNameFor(model => model.SecurityRequirement)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Category)
             </th>
             <th>
@@ -121,7 +118,10 @@
                 @Html.DisplayFor(modelItem => item.ActivityPattern)
             </td>
             <td>
+                @if (item.Prey != null) 
+                {
                 @Html.DisplayFor(modelItem => item.Prey)
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SpaceRequirement)
@@ -130,13 +130,16 @@
                 @Html.DisplayFor(modelItem => item.SecurityRequirement)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImagePath)
+                @if (item.Category != null) 
+                {
+                @Html.DisplayFor(modelItem => item.Category.Description)   
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.Description)
-            </td>
-            <td>
+                @if (item.Enclosure != null) 
+                {
                 @Html.DisplayFor(modelItem => item.Enclosure.Name)
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
