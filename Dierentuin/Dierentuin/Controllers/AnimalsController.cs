@@ -87,7 +87,7 @@ namespace Dierentuin.Controllers
         public IActionResult Create()
         {
             Animal animal = new Animal();
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Description");
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name");
             ViewData["EnclosureId"] = new SelectList(_context.Set<Enclosure>(), "Id", "Name");
 
             return View(animal);
@@ -104,7 +104,7 @@ namespace Dierentuin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Description", animal.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", animal.CategoryId);
             ViewData["EnclosureId"] = new SelectList(_context.Set<Enclosure>(), "Id", "Name", animal.EnclosureId);
             return View(animal);
         }
@@ -122,7 +122,7 @@ namespace Dierentuin.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Description", animal.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", animal.CategoryId);
             ViewData["EnclosureId"] = new SelectList(_context.Set<Enclosure>(), "Id", "Name", animal.EnclosureId);
             return View(animal);
         }
@@ -157,7 +157,7 @@ namespace Dierentuin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Description", animal.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", animal.CategoryId);
             ViewData["EnclosureId"] = new SelectList(_context.Set<Enclosure>(), "Id", "Name", animal.EnclosureId);
             return View(animal);
         }
