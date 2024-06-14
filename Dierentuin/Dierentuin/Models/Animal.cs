@@ -115,7 +115,7 @@ namespace Dierentuin.Models
         {
             if (category != null)
             {
-                foreach (Animal animal in enclosure.Animal)
+                foreach (Animal animal in enclosure.Animals)
                 {
                     if (animal.Category == category)
                     {
@@ -140,7 +140,7 @@ namespace Dierentuin.Models
             double totalSpaceRequired = 0;
             bool isSpaceSufficient = false; // Example constraint
 
-            foreach (Animal animal in enclosure.Animal) 
+            foreach (Animal animal in enclosure.Animals) 
             {
                 totalSpaceRequired += animal.SpaceRequirement;
             };

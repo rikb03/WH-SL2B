@@ -45,12 +45,29 @@
         </dt>
         @foreach(Animal animal in ViewBag.animals)
         {
-            <dd class="">
+            <dd class="col-sm-12">
                 @animal.Name
             </dd>
+
         }
-    </dl>
-</div>
+        @if (ViewBag.messages != null)
+        {
+            <hr />
+            @foreach
+            (string @Result in ViewBag.messages)
+			{
+                <dd class="col-sm-12">
+					@Result
+				</dd>
+			}
+        }
+</div><hr />
+<div>
+    <a asp-action="Sunrise" asp-route-id="@Model?.Id">Sunrise</a>
+    <a asp-action="Sunset" asp-route-id="@Model?.Id">Sunset</a>
+    <a asp-action="FeedingTime" asp-route-id="@Model?.Id">Feeding Time</a>
+    <a asp-action="CheckConstraint" asp-route-id="@Model?.Id">Check Constraint</a>
+</div><hr />
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
