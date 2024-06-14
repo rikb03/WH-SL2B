@@ -89,9 +89,7 @@ namespace Dierentuin.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category
-                .Include(c => c.Animals)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _context.Category.FindAsync(id);
             if (category == null)
             {
                 return NotFound();

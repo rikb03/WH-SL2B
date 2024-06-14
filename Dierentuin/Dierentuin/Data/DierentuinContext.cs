@@ -83,7 +83,7 @@ namespace Dierentuin.Data
 
             modelBuilder.Entity<Animal>()
                 .HasOne(e => e.Enclosure)
-                .WithMany(e => e.Animal)
+                .WithMany(e => e.Animals)
                 .HasForeignKey(e => e.EnclosureId);
 
             Seeder(); // Seeding with bogus faker
