@@ -122,7 +122,7 @@ namespace Dierentuin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Animals")] Category category, List<string> Animals)
         {
             if (id != category.Id)
             {
@@ -133,6 +133,21 @@ namespace Dierentuin.Controllers
             {
                 try
                 {
+                    category = await _context.Category.Include("Animals").FirstOrDefaultAsync(c => c.Id == id);
+
+                    foreach(Animal animal in category.Animals)
+                    {
+                        animal.CategoryId = null; // Removes the category from all the animals currently in the category
+                    }
+
+                    foreach(string animalId in Animals)
+                    {
+                        int animalIdInt = Int32.Parse(animalId);
+                        Animal animal = await _context.Animal.FindAsync(animalIdInt);
+
+                        animal.CategoryId = id; // Puts all the selected animals in the category
+                    }
+
                     _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
