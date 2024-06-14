@@ -44,11 +44,11 @@
         <dt class="col-sm-10">
             Animals in enclosure:
         </dt>
-        @foreach (Animal animal in Model.Animals)
+        @foreach (Animal animal in ViewBag.animals)
         {
-        <dd class="">
+            <dd class="">
                 @animal.Name
-        </dd>
+            </dd>
         }
     </dl>
     

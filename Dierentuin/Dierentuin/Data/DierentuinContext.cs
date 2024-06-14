@@ -27,7 +27,7 @@ namespace Dierentuin.Data
 
             modelBuilder.Entity<Animal>()
                 .HasOne(e => e.Enclosure)
-                .WithMany(e => e.Animals)
+                .WithMany(e => e.Animal)
                 .HasForeignKey(e => e.EnclosureId);
         }
     }
