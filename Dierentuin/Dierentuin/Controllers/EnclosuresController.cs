@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Dierentuin.Data;
 using Dierentuin.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Collections.ObjectModel;
 
 namespace Dierentuin.Controllers
 {
@@ -88,11 +89,25 @@ namespace Dierentuin.Controllers
                 return NotFound();
             }
 
-            var enclosure = await _context.Enclosure.FindAsync(id);
-            if (enclosure == null)
+            var enclosure = await _context.Enclosure.Include(a => a.Animals).FirstOrDefaultAsync(m => m.Id == id);
+            if (enclosure == null && enclosure.Animals == null)
             {
                 return NotFound();
             }
+            List<Animal> animals = await _context.Animal.Include(a => a.Enclosure).ToListAsync(); // List with all animals
+            Collection<SelectListItem> animalSelectList = new Collection<SelectListItem>(); // List with SelectListItem
+
+            foreach (Animal animal in animals) // Making selectlistitems for each animal
+            {
+                SelectListGroup group = null; // Initialize selectgroup
+                if (animal.Enclosure != null) { group = new SelectListGroup { Name = animal.Enclosure.Name }; } // If the animal has an enclosure, add it to the enclosure group // Adds animals to group based on enclosure for better overview
+ 
+                bool animalSelected = enclosure.Animals.Any(a => a.Id == animal.Id); // Checks if animal should be selected
+                animalSelectList.Add(new SelectListItem() { Value = animal.Id.ToString(), Text = animal.Name, Group = group, Selected = animalSelected }); // Add the animal to the list
+            }
+
+            ViewBag.animalsList = animalSelectList; // Sets the viewbag
+
             return View(enclosure);
         }
 
@@ -101,7 +116,7 @@ namespace Dierentuin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Climate,Habitat,SecurityLevel,Size")] Enclosure enclosure)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Climate,Habitat,SecurityLevel,Size")] Enclosure enclosure, List<string> Animals)
         {
             if (id != enclosure.Id)
             {
@@ -112,6 +127,21 @@ namespace Dierentuin.Controllers
             {
                 try
                 {
+                    enclosure = await _context.Enclosure.Include("Animals").FirstOrDefaultAsync(c => c.Id == id); // Includes the animals
+
+                    foreach (Animal animal in enclosure.Animals)
+                    {
+                        animal.EnclosureId = null; // Removes the enclosure from all the animals currently in the enclosure
+                    }
+
+                    foreach (string animalId in Animals)
+                    {
+                        int animalIdInt = Int32.Parse(animalId);
+                        Animal animal = await _context.Animal.FindAsync(animalIdInt);
+
+                        animal.EnclosureId = id; // Puts all the selected animals in the enclosure
+                    }
+
                     _context.Update(enclosure);
                     await _context.SaveChangesAsync();
                 }
