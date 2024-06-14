@@ -96,7 +96,7 @@ namespace Dierentuin.Controllers
         // POST: Animals/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Species,CategoryId,Size,Dietary,ActivityPattern,Prey,EnclosureId,SpaceRequirement,SecurityRequirement")] Animal animal)
+        public async Task<IActionResult> Create([Bind("Id,Name,Species,CategoryId,Size,Dietary,ActivityPattern,Prey,EnclosureId,SpaceRequirement,SecurityRequirement,Image")] Animal animal)
         {
             if (ModelState.IsValid)
             {

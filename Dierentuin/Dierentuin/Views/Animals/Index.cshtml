@@ -5,8 +5,31 @@
 }
 
 <h1>Animals</h1>
+<h3>Search:</h3>
 
-<form asp-controller="Animals" asp-action="Index" method="get">
+<style>
+    .search-form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .search-form label {
+        margin-right: 10px;
+    }
+    .search-form div {
+        display: flex;
+        align-items: center;
+    }
+    .search-form input,
+    .search-form select {
+        margin-left: 10px;
+        padding: 5px;
+    }
+</style>
+
+<form asp-controller="Animals" asp-action="Index" method="get" class="search-form">
     <div>
         <label for="searchString">Name:</label>
         <input type="text" id="searchString" name="searchString" />
@@ -47,12 +70,12 @@
     </div>
     <div>
         <label for="prey">Prey:</label>
-        <input type="number" id="prey" name="prey" />
+        <input type="text" id="prey" name="prey" />
     </div>
     <div>
-        <label for="securityRequirement">securityRequirement:</label>
+        <label for="securityRequirement">Security Requirement:</label>
         <select id="securityRequirement" name="securityRequirement">
-            <option value="">Select securityRequirement</option>
+            <option value="">Select Security Requirement</option>
             @foreach (var securityRequirement in Enum.GetValues(typeof(Dierentuin.Models.Enclosure.SecurityLevelType)))
             {
                 <option value="@securityRequirement">@securityRequirement</option>
@@ -61,8 +84,9 @@
     </div>
     <button type="submit">Filter</button>
 </form>
-    <a asp-action="Create">Create New</a>
-</p>
+
+<a asp-action="Create">Create New</a>
+
 <table class="table">
     <thead>
         <tr>
