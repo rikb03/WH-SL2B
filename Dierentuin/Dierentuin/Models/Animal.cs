@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using static Dierentuin.Models.Enclosure;
 
 namespace Dierentuin.Models
@@ -49,9 +50,9 @@ namespace Dierentuin.Models
         public string Species { get; set; } // Species of the animal
 
         [Column("categories_id")]
-        [Required]
+        [AllowNull]
         [ForeignKey("Category")]
-        public int CategoryId { get; set; } // Id for the animal's category
+        public int? CategoryId { get; set; } // Id for the animal's category
 
         [Required]
         [EnumDataType(typeof(SizeType))]
@@ -69,9 +70,9 @@ namespace Dierentuin.Models
         public int Prey { get; set; } // Prey of the animal
 
         [Column("enclosures_id")]
-        [Required]
+        [AllowNull]
         [ForeignKey("Enclosure")]
-        public int EnclosureId { get; set; } // Id for the animal's enclosure
+        public int? EnclosureId { get; set; } // Id for the animal's enclosure
 
         [Column("spaceRequirement")]
         [Required]
