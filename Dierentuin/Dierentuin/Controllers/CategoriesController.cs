@@ -9,6 +9,7 @@ using Dierentuin.Data;
 using Dierentuin.Models;
 using System.Drawing.Text;
 using System.Text.RegularExpressions;
+using System.Collections.ObjectModel;
 
 namespace Dierentuin.Controllers
 {
@@ -97,18 +98,20 @@ namespace Dierentuin.Controllers
             }
 
             List<Animal> animals = await _context.Animal.Include(a => a.Enclosure).ToListAsync();
-            List<SelectListItem> animalSelectList = new List<SelectListItem>();
-            List<string> animalSelected = new List<string>();
+            Collection<SelectListItem> animalSelectList = new Collection<SelectListItem>();
+            //List<string> animalSelected = new List<string>();
 
             foreach (Animal animal in animals)
             {
                 SelectListGroup group = null;
-                if (animal.Enclosure != null) { group = new SelectListGroup { Name = animal.Enclosure.Name }; }
-                if (animal.CategoryId == id) { animalSelected.Add(animal.Id.ToString()); }
-                animalSelectList.Add(new SelectListItem() { Value = animal.Id.ToString(), Text = animal.Name, Group = group });
+                if (animal.Enclosure != null) { group = new SelectListGroup { Name = animal.Enclosure.Name }; } // If the animal has an enclosure, add it to the enclosure group
+                //if (animal.CategoryId == id) { animalSelected.Add(animal.Id.ToString()); } // If the animal is in the category, add it to the selected list
+                //bool animalSelected = animal.CategoryId == id; // If the animal is in the category, select it
+                bool animalSelected = category.Animals.Any(a => a.Id == animal.Id);
+                animalSelectList.Add(new SelectListItem() { Value = animal.Id.ToString(), Text = animal.Name, Group = group, Selected = animalSelected }); // Add the animal to the list
             }
 
-            ViewBag.animalSelected = animalSelected;
+            //ViewBag.animalSelected = animalSelected ?? new List<string>();  // Ensure it's not null
             ViewBag.animalsList = animalSelectList;
 
             return View(category);
