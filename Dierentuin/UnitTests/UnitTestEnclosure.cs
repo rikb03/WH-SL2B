@@ -15,11 +15,11 @@ namespace UnitTests
         {
             Enclosure enclosure = new Enclosure()
             {
-                Animal = new List<Animal>
+                Animals = new List<Animal>
                 {
                     new Animal { Name = "Kees", ActivityPattern = Animal.ActivityPatternType.Diurnal },
                     new Animal { Name = "Piet", ActivityPattern = Animal.ActivityPatternType.Nocturnal },
-                    new Animal { Name = "Jan", ActivityPattern = Animal.ActivityPatternType.Cathermeral }
+                    new Animal { Name = "Jan", ActivityPattern = Animal.ActivityPatternType.Cathemeral }
                 }
             };
 
@@ -45,11 +45,11 @@ namespace UnitTests
         {
             Enclosure enclosure = new Enclosure()
             {
-                Animal = new List<Animal>
+                Animals = new List<Animal>
                 {
                     new Animal { Name = "Kees", ActivityPattern = Animal.ActivityPatternType.Diurnal },
                     new Animal { Name = "Piet", ActivityPattern = Animal.ActivityPatternType.Nocturnal },
-                    new Animal { Name = "Jan", ActivityPattern = Animal.ActivityPatternType.Cathermeral }
+                    new Animal { Name = "Jan", ActivityPattern = Animal.ActivityPatternType.Cathemeral }
                 }
             };
 
@@ -77,10 +77,10 @@ namespace UnitTests
             Category canines = new Category();
             Enclosure enclosure = new Enclosure()
             {
-                Animal = new List<Animal>
+                Animals = new List<Animal>
                 {
                     new Animal { Name = "Kees"},
-                    new Animal { Name = "Piet", Prey = canines, Category = felines },
+                    new Animal { Name = "Piet", Prey = "canines", Category = felines },
                     new Animal { Name = "Jan", Category = canines}
                 }
             };
@@ -99,9 +99,9 @@ namespace UnitTests
             Category canines = new Category();
             Enclosure enclosure = new Enclosure()
             {
-                Animal = new List<Animal>
+                Animals = new List<Animal>
                 {
-                    new Animal { Name = "Piet", Category = felines, Prey = canines },
+                    new Animal { Name = "Piet", Category = felines, Prey = "canines" },
                     new Animal { Name = "Jan", Category = felines }
                 }
             };
