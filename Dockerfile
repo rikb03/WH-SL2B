@@ -1,10 +1,13 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0 AS base-env
+USER app
 WORKDIR /app
-EXPOSE 5075
+EXPOSE 8080:8080
 
-ENV ASPNETCORE_URLS=http://+:5075
+RUN dotnet --info
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# ENV ASPNETCORE_URLS=http://+:8080
+
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 ARG configuration=Release
 WORKDIR /src
 COPY ["Dierentuin/Dierentuin/Dierentuin.csproj", "Dierentuin/Dierentuin/"]
@@ -12,11 +15,11 @@ COPY . .
 WORKDIR "/src/Dierentuin/Dierentuin"
 RUN dotnet build "Dierentuin.csproj" -c $configuration -o /app/build
 
-FROM build AS publish
+FROM build-env AS publish
 ARG configuration=Release
 RUN dotnet publish "Dierentuin.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
 
-FROM base AS final
+FROM base-env AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Dierentuin.dll"]
