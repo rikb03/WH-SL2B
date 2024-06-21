@@ -41,7 +41,7 @@ jobs:
     name: Deploy
     # needs: [ test, build ]
     needs: [ build ]
-    runs-on: debian
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
