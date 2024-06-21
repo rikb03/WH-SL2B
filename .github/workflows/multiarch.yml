@@ -51,8 +51,8 @@ jobs:
         with:
           namespace: default
           manifests: |
-            kubernetes/deployment.yaml
-            kubernetes/ingress.yaml
-            kubernetes/service.yaml
+            .kube/deployment.yaml
+            .kube/ingress.yaml
+            .kube/service.yaml
           images: |
             ljmagalaes/dierentuingroup12:latest
