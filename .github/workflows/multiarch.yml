@@ -59,7 +59,7 @@ jobs:
       - name: Deploy to the Kubernetes cluster
         uses: azure/k8s-deploy@v1
         with:
-          namespace: default
+          namespace: group12
           manifests: |
             .kube/deployment.yaml
             .kube/ingress.yaml
