@@ -20,7 +20,7 @@ namespace Dierentuin.Controllers
         }
 
         // GET: Animals
-        public async Task<IActionResult> Index(string searchString, string species, Animal.SizeType? size, Animal.DietaryClassType? dietary, Animal.ActivityPatternType? activityPattern, string prey, Animal.SecurityRequirementType? securityRequirement)
+        public async Task<IActionResult> Index(string searchString, string species, Animal.SizeType? size, Animal.DietaryClassType? dietary, Animal.ActivityPatternType? activityPattern, int? prey, Enclosure.SecurityLevelType? securityRequirement)
         {
             var animals = from a in _context.Animal.Include(a => a.Category).Include(a => a.Enclosure)
                           select a;
@@ -50,9 +50,9 @@ namespace Dierentuin.Controllers
                 animals = animals.Where(a => a.ActivityPattern == activityPattern.Value);
             }
 
-            if (!String.IsNullOrEmpty(prey))
+            if (prey != null)
             {
-                animals = animals.Where(a => a.Prey.Contains(prey));
+                animals = animals.Where(a => a.Prey == prey);
             }
 
             if (securityRequirement.HasValue)
@@ -89,13 +89,14 @@ namespace Dierentuin.Controllers
             Animal animal = new Animal();
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Description");
             ViewData["EnclosureId"] = new SelectList(_context.Set<Enclosure>(), "Id", "Name");
+
             return View(animal);
         }
 
         // POST: Animals/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Species,CategoryId,Size,Dietary,ActivityPattern,Prey,EnclosureId,SpaceRequirement,SecurityRequirement")] Animal animal)
+        public async Task<IActionResult> Create([Bind("Id,Name,Species,CategoryId,Size,Dietary,ActivityPattern,Prey,EnclosureId,SpaceRequirement,SecurityRequirement,Image")] Animal animal)
         {
             if (ModelState.IsValid)
             {
@@ -204,73 +205,81 @@ namespace Dierentuin.Controllers
         // GET: Animals/Sunrise/5
         public async Task<IActionResult> Sunrise(int? id)
         {
+            var animal = await _context.Animal.FindAsync(id);
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var animal = await _context.Animal.FindAsync(id);
-            if (animal == null)
+            List<string> Sunrise = new List<string>();
+            foreach (Animal a in _context.Animal)
             {
-                return NotFound();
+                string Result = animal.Sunrise();
+                Sunrise.Add(a.Sunrise());
             }
-
+            
             ViewBag.Message = animal.Sunrise();
-            return View(animal);
+
+            return View("Details", animal);
         }
 
         // GET: Animals/Sunset/5
         public async Task<IActionResult> Sunset(int? id)
         {
+            var animal = await _context.Animal.FindAsync(id);
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var animal = await _context.Animal.FindAsync(id);
-            if (animal == null)
+            List<string> Sunrise = new List<string>();
+            foreach (Animal a in _context.Animal)
             {
-                return NotFound();
+                string Result = animal.Sunset();
+                Sunrise.Add(a.Sunset());
             }
 
             ViewBag.Message = animal.Sunset();
-            return View(animal);
+
+            return View("Details", animal);
         }
 
         // GET: Animals/FeedingTime/5
-        public async Task<IActionResult> FeedingTime(int? id)
+        public async Task<IActionResult> FeedingTime(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var animal = await _context.Animal.FindAsync(id);
+            Animal animal = await _context.Animal.Include(a => a.Enclosure).FirstOrDefaultAsync(a => a.Id == id);
             if (animal == null)
             {
                 return NotFound();
             }
-
-            ViewBag.Message = animal.FeedingTime();
-            return View(animal);
+            Category prey = await _context.Category.FirstOrDefaultAsync(c => c.Id == animal.Prey);
+            ViewBag.Message = animal.FeedingTime(animal.Enclosure, prey, animal);
+            return View("Details", animal);
         }
 
         // GET: Animals/CheckConstraint/5
-        public async Task<IActionResult> CheckConstraint(int? id)
+        public async Task<IActionResult> CheckConstraint(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var animal = await _context.Animal.FindAsync(id);
+            var animal = await _context.Animal.Include(a => a.Enclosure).FirstOrDefaultAsync(a => a.Id == id);
             if (animal == null)
             {
                 return NotFound();
             }
 
-            ViewBag.Message = animal.CheckConstraint();
-            return View(animal);
+            ViewBag.Message = animal.CheckConstraint(animal.Enclosure);
+            return View("Details", animal);
         }
     }
 }

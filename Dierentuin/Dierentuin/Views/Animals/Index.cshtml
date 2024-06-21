@@ -4,11 +4,89 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Animals</h1>
+<h3>Search:</h3>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<style>
+    .search-form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .search-form label {
+        margin-right: 10px;
+    }
+    .search-form div {
+        display: flex;
+        align-items: center;
+    }
+    .search-form input,
+    .search-form select {
+        margin-left: 10px;
+        padding: 5px;
+    }
+</style>
+
+<form asp-controller="Animals" asp-action="Index" method="get" class="search-form">
+    <div>
+        <label for="searchString">Name:</label>
+        <input type="text" id="searchString" name="searchString" />
+    </div>
+    <div>
+        <label for="species">Species:</label>
+        <input type="text" id="species" name="species" />
+    </div>
+    <div>
+        <label for="size">Size:</label>
+        <select id="size" name="size">
+            <option value="">Select Size</option>
+            @foreach (var size in Enum.GetValues(typeof(Dierentuin.Models.Animal.SizeType)))
+            {
+                <option value="@size">@size</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label for="dietary">Diet:</label>
+        <select id="dietary" name="dietary">
+            <option value="">Select Diet</option>
+            @foreach (var dietary in Enum.GetValues(typeof(Dierentuin.Models.Animal.DietaryClassType)))
+            {
+                <option value="@dietary">@dietary</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label for="activityPattern">ActivityPattern:</label>
+        <select id="activityPattern" name="activityPattern">
+            <option value="">Select ActivityPattern</option>
+            @foreach (var activityPattern in Enum.GetValues(typeof(Dierentuin.Models.Animal.ActivityPatternType)))
+            {
+                <option value="@activityPattern">@activityPattern</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label for="prey">Prey:</label>
+        <input type="text" id="prey" name="prey" />
+    </div>
+    <div>
+        <label for="securityRequirement">Security Requirement:</label>
+        <select id="securityRequirement" name="securityRequirement">
+            <option value="">Select Security Requirement</option>
+            @foreach (var securityRequirement in Enum.GetValues(typeof(Dierentuin.Models.Enclosure.SecurityLevelType)))
+            {
+                <option value="@securityRequirement">@securityRequirement</option>
+            }
+        </select>
+    </div>
+    <button type="submit">Filter</button>
+</form>
+
+<a asp-action="Create">Create New</a>
+
 <table class="table">
     <thead>
         <tr>
