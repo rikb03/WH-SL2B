@@ -53,8 +53,7 @@ jobs:
         uses: azure/k8s-set-context@v1
         with:
           method: kubeconfig
-          kubeconfig: .kube/kubeconfig_group12.yaml
-          context: group12-context  # Specify your cluster context name here
+          kubeconfig: ${{ secrets.KUBECONFIG_CONTENTS }}
 
       - name: Deploy to the Kubernetes cluster
         uses: azure/k8s-deploy@v1
