@@ -1,0 +1,73 @@
+Name:             group12-5747996f9-x94bj
+Namespace:        group12
+Priority:         0
+Service Account:  default
+Node:             pi7/10.8.231.17
+Start Time:       Fri, 21 Jun 2024 23:37:50 +0200
+Labels:           app=group12
+                  pod-template-hash=5747996f9
+Annotations:      branch: refs/heads/main
+                  cni.projectcalico.org/containerID: 4b1cbd195ff242be972062d878e84055bdcbb4568c1a34bd56062e3e3dd84a05
+                  cni.projectcalico.org/podIP: 10.1.139.17/32
+                  cni.projectcalico.org/podIPs: 10.1.139.17/32
+                  commit: 7e4f36fe8830da836eaa1b0735b594fc028d42c4
+                  createdBy: rikb03
+                  deployTimestamp: 1719005868877
+                  jobName: deploy
+                  provider: GitHub
+                  repository: rikb03/WH-SL2B
+                  run: 9620092328
+                  runUri: https://github.com/rikb03/WH-SL2B/actions/runs/9620092328
+                  workflow: CI - .NET
+Status:           Running
+IP:               10.1.139.17
+IPs:
+  IP:           10.1.139.17
+Controlled By:  ReplicaSet/group12-5747996f9
+Containers:
+  group12:
+    Container ID:   containerd://9dc736be14d57e5d96953f31c4fcd0af3e8193cc55aefb236fe457b763a2d328
+    Image:          ljmagalaes/dierentuingroup12:latest
+    Image ID:       docker.io/ljmagalaes/dierentuingroup12@sha256:ede544a890eea22479c8761ca2ed1996af6690bbe1aadafa3bf368c41b3ad291
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Fri, 21 Jun 2024 23:44:53 +0200
+      Finished:     Fri, 21 Jun 2024 23:44:53 +0200
+    Ready:          False
+    Restart Count:  6
+    Limits:
+      cpu:     500m
+      memory:  128Mi
+    Requests:
+      cpu:        250m
+      memory:     64Mi
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-75rjp (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-75rjp:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason   Age                    From     Message
+  ----     ------   ----                   ----     -------
+  Warning  BackOff  4m9s (x19 over 8m15s)  kubelet  Back-off restarting failed container group12 in pod group12-5747996f9-x94bj_group12(e5bf3deb-b330-4c1f-9a04-391f30fa50c0)

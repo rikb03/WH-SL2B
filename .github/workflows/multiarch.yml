@@ -9,7 +9,7 @@ jobs:
   #   name: Test
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: debian
 
     steps:
     - name: Checkout code
@@ -41,7 +41,7 @@ jobs:
     name: Deploy
     # needs: [ test, build ]
     needs: [ build ]
-    runs-on: ubuntu-latest
+    runs-on: debian
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
