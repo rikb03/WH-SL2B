@@ -5,8 +5,8 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
-    name: Test
+  # test:
+  #   name: Test
 
   build:
     runs-on: ubuntu-latest
@@ -39,7 +39,8 @@ jobs:
 
   deploy:
     name: Deploy
-    needs: [ test, build ]
+    # needs: [ test, build ]
+    needs: [ build ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
