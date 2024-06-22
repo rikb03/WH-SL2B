@@ -86,7 +86,7 @@ jobs:
           
   deploy:
     name: Deploy
-    needs: [ build ]
+    needs: [ build, security_scan]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -114,7 +114,7 @@ jobs:
 
   post_deployment_verification:
     runs-on: ubuntu-latest
-    needs: security_scan
+    needs: [ security_scan, deploy, build ]
 
     steps:
       -
