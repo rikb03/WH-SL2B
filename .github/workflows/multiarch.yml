@@ -2,7 +2,9 @@ name: CI - .NET
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ test ]
+  pull_request:
+    branches: [ test ]
 
 jobs:
   build:
@@ -49,6 +51,38 @@ jobs:
         tags: |
           ljmagalaes/dierentuingroup12:latest
 
+   security_scan:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      -
+        name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0.x'
+
+      -
+        name: Install OWASP Dependency-Check
+        run: |
+          wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.2.0/dependency-check-9.2.0-release.zip
+          unzip dependency-check-9.2.0-release.zip
+
+      -
+        name: Run OWASP Dependency-Check
+        run: |
+          ./dependency-check/bin/dependency-check.sh --project "My Project" --scan ./ --out . --format "ALL"
+
+      -
+        name: Archive vulnerability report
+        uses: actions/upload-artifact@v2
+        with:
+          name: dependency-check-report
+          path: dependency-check-report.html
+          
   deploy:
     name: Deploy
     needs: [ build ]
@@ -76,3 +110,24 @@ jobs:
             .kube/service.yaml
           images: |
             ljmagalaes/dierentuingroup12:latest
+
+  post_deployment_verification:
+    runs-on: ubuntu-latest
+    needs: security_scan
+
+    steps:
+      -
+        name: Perform smoke tests
+        run: |
+          curl https://your-app-url.com/healthcheck
+      -
+        name: Monitor application logs and metrics
+        run: |
+          cat path/to/your/log/file.txt > build_logs.txt
+          grep -i "error" build_logs.txt
+
+          echo "Uploading build logs..."
+          actions/upload-artifact@v3  
+            with:
+              name: build-logs  # Artifact name for downloaded logs
+              path: build_logs.txt
