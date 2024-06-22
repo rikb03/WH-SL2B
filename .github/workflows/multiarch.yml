@@ -75,7 +75,7 @@ jobs:
       -
         name: Run OWASP Dependency-Check
         run: |
-          ./dependency-check/bin/dependency-check.sh --project "My Project" --scan ./ --out . --format "ALL"
+          ./dependency-check/bin/dependency-check.sh --project "DIerentuin_DEVOPS" --scan ./ --out . --format "ALL" --nvdApiKey ${{ secrets.NVD_API_KEY }}
 
       -
         name: Archive vulnerability report
