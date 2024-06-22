@@ -15,11 +15,11 @@ COPY . .
 WORKDIR "/src/Dierentuin/Dierentuin"
 RUN dotnet build "Dierentuin.csproj" -c $configuration -o /app/build
 
-FROM build AS publish
+FROM --platform=$BUILDPLATFORM build AS publish
 ARG configuration=Release
 RUN dotnet publish "Dierentuin.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
 
-FROM base AS final
+FROM --platform=$BUILDPLATFORM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Dierentuin.dll"]
