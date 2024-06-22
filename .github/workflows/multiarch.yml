@@ -5,16 +5,8 @@ on:
     branches: [ main ]
 
 jobs:
-  # test:
-  #   name: Test
-
   build:
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     platform: 
-    #       - linux/arm64 
-    #       - linux/amd64
 
     steps:
     - name: Checkout code
@@ -51,7 +43,6 @@ jobs:
 
   deploy:
     name: Deploy
-    # needs: [ test, build ]
     needs: [ build ]
     runs-on: ubuntu-latest
     steps:
