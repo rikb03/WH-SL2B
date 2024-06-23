@@ -39,7 +39,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        platforms: linux/amd64,linux/arm64
+        platforms: linux/amd64,linux/arm64,linux/arm/v7
         tags:
           # - ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
           - ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.run_number }}
