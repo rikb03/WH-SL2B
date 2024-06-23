@@ -23,3 +23,16 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Dierentuin.dll"]
+
+FROM alpine:3.12 AS goss
+
+# Install curl and goss
+RUN apk add --no-cache curl
+RUN curl -fsSL https://goss.rocks/install | sh
+
+# Kopieer goss configuratie bestand
+COPY goss-healthcheck.yaml /goss-healthcheck.yaml
+
+# Definieer de health check met goss
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD goss -g /goss-healthcheck.yaml validate
