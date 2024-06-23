@@ -89,7 +89,7 @@ jobs:
           dotnet-version: '8.0.x'
           - name: Test with the dotnet CLI
             run: dotnet test
-            path: ./Dierentuin\UnitTests\UnitTests.csproj
+            path: ./Dierentuin/UnitTests/UnitTests.csproj
 
   deploy:
     name: Deploy
