@@ -52,12 +52,6 @@ namespace Dierentuin.Migrations
                     b.Property<int?>("Prey")
                         .HasColumnType("int");
 
-                    b.Property<int>("SecurityRequirement")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
-
                     b.Property<double>("SpaceRequirement")
                         .HasColumnType("float")
                         .HasColumnName("spaceRequirement");

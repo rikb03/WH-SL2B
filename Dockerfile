@@ -1,14 +1,16 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER app
 WORKDIR /app
-EXPOSE 5075
+EXPOSE 8080:8080
 
-ENV ASPNETCORE_URLS=http://+:5075
+RUN dotnet --info
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# ENV ASPNETCORE_URLS=http://+:8080
+
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG configuration=Release
 WORKDIR /src
 COPY ["Dierentuin/Dierentuin/Dierentuin.csproj", "Dierentuin/Dierentuin/"]
-RUN dotnet restore "Dierentuin\Dierentuin\Dierentuin.csproj"
 COPY . .
 WORKDIR "/src/Dierentuin/Dierentuin"
 RUN dotnet build "Dierentuin.csproj" -c $configuration -o /app/build
