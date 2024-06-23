@@ -41,7 +41,7 @@ jobs:
         push: true
         platforms: linux/amd64,linux/arm64
         tags:
-          - ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+          # - ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
           - ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.run_number }}
 
   security_scan:
