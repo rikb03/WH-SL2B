@@ -32,7 +32,7 @@ namespace UnitTests
         [Fact]
         public void Sunset_CathermeralAnimal_ShouldBeAlwaysActive()
         {
-            Animal animal = new Animal() { ActivityPattern = Animal.ActivityPatternType.Cathermeral };
+            Animal animal = new Animal() { ActivityPattern = Animal.ActivityPatternType.Cathemeral };
 
             var result = animal.Sunset();
 
@@ -62,7 +62,7 @@ namespace UnitTests
         [Fact]
         public void Sunrise_CathermeralAnimal_ShouldBeAlwaysActive()
         {
-            Animal animal = new Animal() { ActivityPattern = Animal.ActivityPatternType.Cathermeral };
+            Animal animal = new Animal() { ActivityPattern = Animal.ActivityPatternType.Cathemeral };
 
             var result = animal.Sunrise();
 
@@ -72,12 +72,12 @@ namespace UnitTests
         [Fact]
         public void FeedingTime_AnimalWithPreyInEnclosure_ShouldEatPrey()
         {
-            Category felis = new Category();
+            Category felis = new Category(){ Id = 1 };
             Enclosure kooi = new Enclosure();
             Animal prey = new Animal() { Name = "prey", Category = felis, Enclosure = kooi };
-            Animal predator = new Animal() { Name = "predator", Prey = felis, Enclosure = kooi };
+            Animal predator = new Animal() { Name = "predator", Prey = felis.Id, Enclosure = kooi };
 
-            var result = predator.FeedingTime();
+            var result = predator.FeedingTime(kooi, felis, predator);
 
             Assert.Equal("Eats prey", result);
         }
@@ -85,13 +85,13 @@ namespace UnitTests
         [Fact]
         public void FeedingTime_AnimalWithNoPreyInEnclosure_ShouldEatGivenFood()
         {
-            Category felis = new Category();
-            Category canis = new Category();
+            Category felis = new Category(){ Id = 1 };
+            Category canis = new Category(){ Id = 2 };
             Enclosure kooi = new Enclosure();
             Animal notPrey = new Animal() { Name = "notPrey", Category = canis };
-            Animal predator = new Animal() { Name = "predator", Prey = felis, Enclosure = kooi };
+            Animal predator = new Animal() { Name = "predator", Prey = canis.Id, Enclosure = kooi, Category = felis };
 
-            var result = predator.FeedingTime();
+            var result = predator.FeedingTime(kooi, felis, predator);
 
             Assert.Equal("Eats given food", result);
         }
@@ -99,11 +99,11 @@ namespace UnitTests
         [Fact]
         public void FeedingTime_AnimalAloneInCage_ShouldEatGivenFood()
         {
-            Category felis = new Category();
+            Category felis = new Category(){ Id = 1 };
             Enclosure kooi = new Enclosure();
-            Animal predator = new Animal() { Name = "predator", Prey = felis, Enclosure = kooi };
+            Animal predator = new Animal() { Name = "predator", Prey = felis.Id, Enclosure = kooi };
 
-            var result = predator.FeedingTime();
+            var result = predator.FeedingTime(kooi, felis, predator);
 
             Assert.Equal("Eats given food", result);
         }

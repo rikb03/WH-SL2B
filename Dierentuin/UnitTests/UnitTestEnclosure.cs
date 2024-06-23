@@ -15,11 +15,11 @@ namespace UnitTests
         {
             Enclosure enclosure = new Enclosure()
             {
-                Animal = new List<Animal>
+                Animals = new List<Animal>
                 {
                     new Animal { Name = "Kees", ActivityPattern = Animal.ActivityPatternType.Diurnal },
                     new Animal { Name = "Piet", ActivityPattern = Animal.ActivityPatternType.Nocturnal },
-                    new Animal { Name = "Jan", ActivityPattern = Animal.ActivityPatternType.Cathermeral }
+                    new Animal { Name = "Jan", ActivityPattern = Animal.ActivityPatternType.Cathemeral }
                 }
             };
 
@@ -45,11 +45,11 @@ namespace UnitTests
         {
             Enclosure enclosure = new Enclosure()
             {
-                Animal = new List<Animal>
+                Animals = new List<Animal>
                 {
                     new Animal { Name = "Kees", ActivityPattern = Animal.ActivityPatternType.Diurnal },
                     new Animal { Name = "Piet", ActivityPattern = Animal.ActivityPatternType.Nocturnal },
-                    new Animal { Name = "Jan", ActivityPattern = Animal.ActivityPatternType.Cathermeral }
+                    new Animal { Name = "Jan", ActivityPattern = Animal.ActivityPatternType.Cathemeral }
                 }
             };
 
@@ -73,14 +73,14 @@ namespace UnitTests
         [Fact]
         public void FeedingTime_AnimalsWithPreyInEnclosure_ShouldEatPrey()
         {
-            Category felines = new Category();
-            Category canines = new Category();
+            Category felines = new Category(){ Id = 2 };
+            Category canines = new Category(){ Id = 1 };
             Enclosure enclosure = new Enclosure()
             {
-                Animal = new List<Animal>
+                Animals = new List<Animal>
                 {
                     new Animal { Name = "Kees"},
-                    new Animal { Name = "Piet", Prey = canines, Category = felines },
+                    new Animal { Name = "Piet", Prey = canines.Id, Category = felines },
                     new Animal { Name = "Jan", Category = canines}
                 }
             };
@@ -95,13 +95,13 @@ namespace UnitTests
         [Fact]
         public void FeedingTime_AnimalsWithNoPreyInEnclosure_NoneShouldEatPrey()
         {
-            Category felines = new Category();
-            Category canines = new Category();
+            Category felines = new Category(){ Id = 2 };
+            Category canines = new Category(){ Id = 1 };
             Enclosure enclosure = new Enclosure()
             {
-                Animal = new List<Animal>
+                Animals = new List<Animal>
                 {
-                    new Animal { Name = "Piet", Category = felines, Prey = canines },
+                    new Animal { Name = "Piet", Category = felines, Prey = canines.Id },
                     new Animal { Name = "Jan", Category = felines }
                 }
             };
