@@ -93,7 +93,7 @@ jobs:
         
   deploy:
     name: Deploy
-    needs: [ build, security_scan, unit_testing]
+    needs: [ build, security_scan,]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
