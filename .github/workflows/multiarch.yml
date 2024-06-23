@@ -42,6 +42,31 @@ jobs:
         platforms: linux/amd64,linux/arm64,linux/arm/v7
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.run_number }}
 
+  unit_testing:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release
+
+      - name: Unit Test
+        run: dotnet test --no-build --configuration Release
+
+      - name: Publish
+        run: dotnet publish --no-build --configuration Release --output ./build
+
   security_scan:
     runs-on: ubuntu-latest
     needs: [ build ]
@@ -112,14 +137,3 @@ jobs:
         name: Perform smoke tests
         run: |
           curl https://your-app-url.com/healthcheck
-      -
-        name: Monitor application logs and metrics
-        run: |
-          cat path/to/your/log/file.txt > build_logs.txt
-          grep -i "error" build_logs.txt
-
-          echo "Uploading build logs..."
-          actions/upload-artifact@v3  
-            with:
-              name: build-logs  # Artifact name for downloaded logs
-              path: build_logs.txt
