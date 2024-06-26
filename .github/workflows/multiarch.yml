@@ -38,7 +38,7 @@ jobs:
         file: ./Dockerfile
         push: true
         platforms: linux/amd64,linux/arm64
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.ref_name }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${GITHUB_REF#refs/heads/}
         # tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.run_number }}
 
 
