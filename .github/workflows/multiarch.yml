@@ -1,15 +1,13 @@
 name: CI - .NET
 on:
   workflow_dispatch:
-  push:
-    branches: [ test ]
+  # push:
   pull_request:
-    types: [opened, reopened]
-    branches: [ test ]
+    types: [opened, reopened, edited, synchronize]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, ARM64]
     # strategy:
     #   matrix:
     #     platform: 
@@ -39,45 +37,60 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        platforms: linux/amd64,linux/arm64,linux/arm/v7
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.run_number }}
+        platforms: linux/amd64,linux/arm64
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }}
+        # tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.run_number }}
 
 
-  security_scan:
-    runs-on: ubuntu-latest
-    needs: [ build ]
+  # security_scan:
+    # runs-on: [self-hosted, Linux, ARM64]
+    # needs: [ build ]
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # steps:
+    #   - name: Checkout code
+    #     uses: actions/checkout@v2
 
-      -
-        name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
+    #   -
+    #     name: Setup .NET Core
+    #     uses: actions/setup-dotnet@v1
+    #     with:
+    #       dotnet-version: '6.0.x'
 
-      -
-        name: Install OWASP Dependency-Check
-        run: |
-          wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.2.0/dependency-check-9.2.0-release.zip
-          unzip dependency-check-9.2.0-release.zip
+    #   - name: Setup Java
+    #     uses: actions/setup-java@v2
+    #     with:
+    #       distribution: 'microsoft' 
+    #       java-version: '17.0.1'
 
-      -
-        name: Run OWASP Dependency-Check
-        run: |
-          ./dependency-check/bin/dependency-check.sh --project "DIerentuin_DEVOPS" --scan ./ --out . --format "ALL" --nvdApiKey ${{ secrets.NVD_API_KEY }}
+    #   - name: Set up QEMU
+    #     uses: docker/setup-qemu-action@v1
 
-      -
-        name: Archive vulnerability report
-        uses: actions/upload-artifact@v2
-        with:
-          name: dependency-check-report
-          path: dependency-check-report.html
+    #   - name: Install dependencies
+    #     run: |
+    #       sudo apt-get update
+    #       sudo apt-get install -y libc6
+          
+    #   -
+    #     name: Install OWASP Dependency-Check
+    #     run: |
+    #       wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.2.0/dependency-check-9.2.0-release.zip
+    #       unzip dependency-check-9.2.0-release.zip
+
+    #   -
+    #     name: Run OWASP Dependency-Check
+    #     run: |
+    #       ./dependency-check/bin/dependency-check.sh --project "Dierentuin_DEVOPS" --scan ./ --out . --format "ALL" --nvdApiKey ${{ secrets.NVD_API_KEY }}
+
+    #   -
+    #     name: Archive vulnerability report
+    #     uses: actions/upload-artifact@v2
+    #     with:
+    #       name: dependency-check-report
+    #       path: dependency-check-report.html
           
   unit_testing:
-    runs-on: ubuntu-latest
-    needs: [build, security_scan]
+    runs-on: [self-hosted, Linux, ARM64]
+    needs: [build]
 
     steps:
       - name: Checkout code
@@ -90,42 +103,32 @@ jobs:
 
       - name: Test with the dotnet CLI
         run: dotnet test ./Dierentuin/UnitTests/UnitTests.csproj
-        
-  deploy:
-    name: Deploy
-    needs: [ build, security_scan,]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v1
-
-      - name: Set Kubernetes context
-        uses: azure/k8s-set-context@v1
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBECONFIG_CONTENTS }}
-
-      - name: Deploy to the Kubernetes cluster
-        uses: azure/k8s-deploy@v1
-        with:
-          namespace: group12
-          manifests: |
-            .kube/deployment.yaml
-            .kube/ingress.yaml
-            .kube/service.yaml
-          tags: 
-          images: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
-
-  post_deployment_verification:
-    runs-on: ubuntu-latest
-    needs: [ security_scan, deploy, build ]
+  # If the unit tests succeeded, push to dockerhub with latest tag
+  push_to_latest:
+    runs-on: [self-hosted, Linux, ARM64]
+    # needs: [unit_testing]
+    needs: [build]
 
     steps:
-      -
-        name: Perform smoke tests
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Get the docker image that was built in the build job
+      - name: Pull Docker image
         run: |
-          curl https://your-app-url.com/healthcheck
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }}
+
+      # Change the tag of the docker image to latest
+      - name: Tag Docker image with new tag
+        run: |
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }} ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+
+      # Push the docker image with the new tag
+      - name: Push Docker image with new tag
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+  
