@@ -1,0 +1,45 @@
+name: Deploy
+on:
+  workflow_dispatch:
+  push: # Run on push or merge of pull request to main branch
+    branches: [ main ]
+
+jobs:
+    deploy:
+    name: Deploy
+    needs: [ build]
+    runs-on: [self-hosted, Linux, ARM64]
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: Set Kubernetes context
+        uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG_CONTENTS }}
+
+      - name: Deploy to the Kubernetes cluster
+        uses: azure/k8s-deploy@v1
+        with:
+          namespace: group12
+          manifests: |
+            .kube/deployment.yaml
+            .kube/ingress.yaml
+            .kube/service.yaml
+          tags: 
+          images: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+
+  post_deployment_verification:
+    runs-on: [self-hosted, Linux, ARM64]
+    needs: [ deploy, build ]
+
+    steps:
+      -
+        name: Perform smoke tests
+        run: |
+          curl https://12.web.dops.tech/

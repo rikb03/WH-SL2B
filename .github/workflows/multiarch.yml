@@ -2,10 +2,8 @@ name: CI - .NET
 on:
   workflow_dispatch:
   push:
-    branches: [ test ]
   pull_request:
     types: [opened, reopened]
-    branches: [ test ]
 
 jobs:
   build:
@@ -40,7 +38,7 @@ jobs:
         file: ./Dockerfile
         push: true
         platforms: linux/amd64,linux/arm64
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.ref_name }}
         # tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.run_number }}
 
 
@@ -106,41 +104,15 @@ jobs:
       - name: Test with the dotnet CLI
         run: dotnet test ./Dierentuin/UnitTests/UnitTests.csproj
 
-  deploy:
-    name: Deploy
-    needs: [ build]
+  # If the unit tests succeeded, push to dockerhub with latest tag
+  push_to_latest:
     runs-on: [self-hosted, Linux, ARM64]
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
-
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-
-      - name: Set Kubernetes context
-        uses: azure/k8s-set-context@v1
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBECONFIG_CONTENTS }}
-
-      - name: Deploy to the Kubernetes cluster
-        uses: azure/k8s-deploy@v1
-        with:
-          namespace: group12
-          manifests: |
-            .kube/deployment.yaml
-            .kube/ingress.yaml
-            .kube/service.yaml
-          tags: 
-          images: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
-
-  post_deployment_verification:
-    runs-on: [self-hosted, Linux, ARM64]
-    needs: [ deploy, build ]
+    # needs: [unit_testing]
+    needs: [build]
 
     steps:
-      -
-        name: Perform smoke tests
+      - name: Push Docker image
         run: |
-          curl https://your-app-url.com/healthcheck
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+
+  
