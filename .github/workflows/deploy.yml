@@ -5,9 +5,8 @@ on:
     branches: [ main ]
 
 jobs:
-    deploy:
-    name: Deploy
-    needs: [ build]
+  deploy:
+    name: Deploy to Kubernetes
     runs-on: [self-hosted, Linux, ARM64]
     steps:
       - name: Checkout source code
@@ -36,10 +35,9 @@ jobs:
 
   post_deployment_verification:
     runs-on: [self-hosted, Linux, ARM64]
-    needs: [ deploy, build ]
+    needs: [ deploy ]
 
     steps:
-      -
-        name: Perform smoke tests
+      - name: Perform smoke tests
         run: |
           curl https://12.web.dops.tech/
