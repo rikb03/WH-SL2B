@@ -58,6 +58,12 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'microsoft' 
+          java-version: '22'
+
       -
         name: Install OWASP Dependency-Check
         run: |
@@ -67,7 +73,7 @@ jobs:
       -
         name: Run OWASP Dependency-Check
         run: |
-          ./dependency-check/bin/dependency-check.sh --project "DIerentuin_DEVOPS" --scan ./ --out . --format "ALL" --nvdApiKey ${{ secrets.NVD_API_KEY }}
+          ./dependency-check/bin/dependency-check.sh --project "Dierentuin_DEVOPS" --scan ./ --out . --format "ALL" --nvdApiKey ${{ secrets.NVD_API_KEY }}
 
       -
         name: Archive vulnerability report
