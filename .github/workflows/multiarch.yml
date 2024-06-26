@@ -120,12 +120,12 @@ jobs:
       # Get the docker image that was built in the build job
       - name: Pull Docker image
         run: |
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.ref_name }}
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }}
 
       # Change the tag of the docker image to latest
       - name: Tag Docker image with new tag
         run: |
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.ref_name }} ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }} ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
 
       # Push the docker image with the new tag
       - name: Push Docker image with new tag
