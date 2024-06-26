@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, ARM64]
     # strategy:
     #   matrix:
     #     platform: 
@@ -39,12 +39,13 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        platforms: linux/amd64,linux/arm64,linux/arm/v7
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.run_number }}
+        platforms: linux/amd64,linux/arm64
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+        # tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.run_number }}
 
 
   security_scan:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, ARM64]
     needs: [ build ]
 
     steps:
@@ -76,7 +77,7 @@ jobs:
           path: dependency-check-report.html
           
   unit_testing:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, ARM64]
     needs: [build, security_scan]
 
     steps:
@@ -94,13 +95,13 @@ jobs:
   deploy:
     name: Deploy
     needs: [ build, security_scan,]
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, ARM64]
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
 
       - name: Set up kubectl
-        uses: azure/setup-kubectl@v1
+        uses: azure/setup-kubectl@v3
 
       - name: Set Kubernetes context
         uses: azure/k8s-set-context@v1
@@ -121,7 +122,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
 
   post_deployment_verification:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, ARM64]
     needs: [ security_scan, deploy, build ]
 
     steps:
