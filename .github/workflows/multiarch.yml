@@ -111,8 +111,24 @@ jobs:
     needs: [build]
 
     steps:
-      - name: Push Docker image
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Get the docker image that was built in the build job
+      - name: Pull Docker image
+        run: |
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.ref_name }}
+
+      # Change the tag of the docker image to latest
+      - name: Tag Docker image with new tag
+        run: |
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.ref_name }} ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+
+      # Push the docker image with the new tag
+      - name: Push Docker image with new tag
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
-
   
