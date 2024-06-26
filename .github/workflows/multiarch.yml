@@ -1,9 +1,9 @@
 name: CI - .NET
 on:
   workflow_dispatch:
-  push:
+  # push:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, edited]
 
 jobs:
   build:
