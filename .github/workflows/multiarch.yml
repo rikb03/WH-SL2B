@@ -64,6 +64,11 @@ jobs:
           distribution: 'microsoft' 
           java-version: '17.0.1'
 
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libc6
+          
       -
         name: Install OWASP Dependency-Check
         run: |
@@ -97,7 +102,7 @@ jobs:
 
       - name: Test with the dotnet CLI
         run: dotnet test ./Dierentuin/UnitTests/UnitTests.csproj
-        
+
   deploy:
     name: Deploy
     needs: [ build, security_scan,]
