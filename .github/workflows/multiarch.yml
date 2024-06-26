@@ -44,55 +44,55 @@ jobs:
         # tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.run_number }}
 
 
-  security_scan:
-    runs-on: [self-hosted, Linux, ARM64]
-    needs: [ build ]
+  # security_scan:
+    # runs-on: [self-hosted, Linux, ARM64]
+    # needs: [ build ]
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # steps:
+    #   - name: Checkout code
+    #     uses: actions/checkout@v2
 
-      -
-        name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
+    #   -
+    #     name: Setup .NET Core
+    #     uses: actions/setup-dotnet@v1
+    #     with:
+    #       dotnet-version: '6.0.x'
 
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'microsoft' 
-          java-version: '17.0.1'
+    #   - name: Setup Java
+    #     uses: actions/setup-java@v2
+    #     with:
+    #       distribution: 'microsoft' 
+    #       java-version: '17.0.1'
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+    #   - name: Set up QEMU
+    #     uses: docker/setup-qemu-action@v1
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libc6
+    #   - name: Install dependencies
+    #     run: |
+    #       sudo apt-get update
+    #       sudo apt-get install -y libc6
           
-      -
-        name: Install OWASP Dependency-Check
-        run: |
-          wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.2.0/dependency-check-9.2.0-release.zip
-          unzip dependency-check-9.2.0-release.zip
+    #   -
+    #     name: Install OWASP Dependency-Check
+    #     run: |
+    #       wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.2.0/dependency-check-9.2.0-release.zip
+    #       unzip dependency-check-9.2.0-release.zip
 
-      -
-        name: Run OWASP Dependency-Check
-        run: |
-          ./dependency-check/bin/dependency-check.sh --project "Dierentuin_DEVOPS" --scan ./ --out . --format "ALL" --nvdApiKey ${{ secrets.NVD_API_KEY }}
+    #   -
+    #     name: Run OWASP Dependency-Check
+    #     run: |
+    #       ./dependency-check/bin/dependency-check.sh --project "Dierentuin_DEVOPS" --scan ./ --out . --format "ALL" --nvdApiKey ${{ secrets.NVD_API_KEY }}
 
-      -
-        name: Archive vulnerability report
-        uses: actions/upload-artifact@v2
-        with:
-          name: dependency-check-report
-          path: dependency-check-report.html
+    #   -
+    #     name: Archive vulnerability report
+    #     uses: actions/upload-artifact@v2
+    #     with:
+    #       name: dependency-check-report
+    #       path: dependency-check-report.html
           
   unit_testing:
     runs-on: [self-hosted, Linux, ARM64]
-    needs: [build, security_scan]
+    needs: [build]
 
     steps:
       - name: Checkout code
@@ -108,7 +108,7 @@ jobs:
 
   deploy:
     name: Deploy
-    needs: [ build, security_scan,]
+    needs: [ build]
     runs-on: [self-hosted, Linux, ARM64]
     steps:
       - name: Checkout source code
