@@ -137,7 +137,7 @@ jobs:
 
   post_deployment_verification:
     runs-on: [self-hosted, Linux, ARM64]
-    needs: [ security_scan, deploy, build ]
+    needs: [ deploy, build ]
 
     steps:
       -
