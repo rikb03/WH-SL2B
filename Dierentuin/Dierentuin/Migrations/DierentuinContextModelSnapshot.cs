@@ -3,7 +3,6 @@ using System;
 using Dierentuin.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -16,50 +15,50 @@ namespace Dierentuin.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
 
             modelBuilder.Entity("Dierentuin.Models.Animal", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("ActivityPattern")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("CategoryId")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("categories_id");
 
                     b.Property<int>("Dietary")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("EnclosureId")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("enclosures_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("Prey")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SecurityRequirement")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("SpaceRequirement")
-                        .HasColumnType("float")
+                        .HasColumnType("REAL")
                         .HasColumnName("spaceRequirement");
 
                     b.Property<string>("Species")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -74,141 +73,141 @@ namespace Dierentuin.Migrations
                         {
                             Id = 1,
                             ActivityPattern = 0,
-                            CategoryId = 4,
-                            Dietary = 1,
-                            EnclosureId = 9,
-                            Name = "Fiona",
-                            Prey = 4,
-                            SecurityRequirement = 0,
-                            Size = 4,
-                            SpaceRequirement = 52.609020481924709,
-                            Species = "Pachyderms"
+                            CategoryId = 6,
+                            Dietary = 4,
+                            EnclosureId = 1,
+                            Name = "Tremayne",
+                            Prey = 6,
+                            SecurityRequirement = 1,
+                            Size = 3,
+                            SpaceRequirement = 76.005636193022866,
+                            Species = "Aquatic Animals"
                         },
                         new
                         {
                             Id = 2,
                             ActivityPattern = 2,
-                            CategoryId = 9,
-                            Dietary = 0,
-                            EnclosureId = 1,
-                            Name = "Nicklaus",
-                            Prey = 7,
-                            SecurityRequirement = 1,
-                            Size = 0,
-                            SpaceRequirement = 2.9302837644599737,
-                            Species = "Pachyderms"
+                            CategoryId = 5,
+                            Dietary = 3,
+                            EnclosureId = 5,
+                            Name = "Jeffry",
+                            Prey = 3,
+                            SecurityRequirement = 0,
+                            Size = 3,
+                            SpaceRequirement = 43.983474680949378,
+                            Species = "Ungulates"
                         },
                         new
                         {
                             Id = 3,
                             ActivityPattern = 0,
-                            CategoryId = 5,
-                            Dietary = 0,
-                            EnclosureId = 7,
-                            Name = "Adolphus",
-                            Prey = 9,
-                            SecurityRequirement = 0,
-                            Size = 3,
-                            SpaceRequirement = 41.734799958790504,
-                            Species = "Birds"
+                            CategoryId = 8,
+                            Dietary = 1,
+                            EnclosureId = 5,
+                            Name = "Miller",
+                            Prey = 2,
+                            SecurityRequirement = 2,
+                            Size = 1,
+                            SpaceRequirement = 72.21702100520362,
+                            Species = "Insects"
                         },
                         new
                         {
                             Id = 4,
-                            ActivityPattern = 0,
-                            CategoryId = 2,
-                            Dietary = 4,
-                            EnclosureId = 10,
-                            Name = "Amaya",
-                            Prey = 2,
+                            ActivityPattern = 1,
+                            CategoryId = 9,
+                            Dietary = 2,
+                            EnclosureId = 8,
+                            Name = "Arden",
+                            Prey = 6,
                             SecurityRequirement = 1,
                             Size = 1,
-                            SpaceRequirement = 6.6179048408281327,
-                            Species = "Ungulates"
+                            SpaceRequirement = 18.966558877529501,
+                            Species = "Birds"
                         },
                         new
                         {
                             Id = 5,
-                            ActivityPattern = 2,
-                            CategoryId = 3,
-                            Dietary = 4,
-                            EnclosureId = 7,
-                            Name = "Anabel",
-                            Prey = 6,
+                            ActivityPattern = 1,
+                            CategoryId = 5,
+                            Dietary = 1,
+                            EnclosureId = 9,
+                            Name = "Tavares",
+                            Prey = 5,
                             SecurityRequirement = 0,
-                            Size = 3,
-                            SpaceRequirement = 4.9489435151673806,
-                            Species = "Pachyderms"
+                            Size = 1,
+                            SpaceRequirement = 47.826318734103445,
+                            Species = "Bovines"
                         },
                         new
                         {
                             Id = 6,
-                            ActivityPattern = 1,
-                            CategoryId = 5,
-                            Dietary = 2,
-                            EnclosureId = 5,
-                            Name = "Enrique",
-                            Prey = 4,
-                            SecurityRequirement = 0,
-                            Size = 2,
-                            SpaceRequirement = 81.141339057972431,
-                            Species = "Reptiles"
+                            ActivityPattern = 2,
+                            CategoryId = 6,
+                            Dietary = 1,
+                            EnclosureId = 7,
+                            Name = "Zula",
+                            Prey = 9,
+                            SecurityRequirement = 1,
+                            Size = 5,
+                            SpaceRequirement = 17.620696395763002,
+                            Species = "Pachyderms"
                         },
                         new
                         {
                             Id = 7,
                             ActivityPattern = 2,
-                            CategoryId = 4,
-                            Dietary = 1,
+                            CategoryId = 2,
+                            Dietary = 4,
                             EnclosureId = 1,
-                            Name = "Collin",
-                            Prey = 7,
-                            SecurityRequirement = 2,
-                            Size = 2,
-                            SpaceRequirement = 10.491983032470461,
-                            Species = "Primates"
+                            Name = "Juliet",
+                            Prey = 8,
+                            SecurityRequirement = 0,
+                            Size = 3,
+                            SpaceRequirement = 66.017261503547758,
+                            Species = "Arachnids"
                         },
                         new
                         {
                             Id = 8,
                             ActivityPattern = 2,
-                            CategoryId = 6,
-                            Dietary = 0,
-                            EnclosureId = 8,
-                            Name = "Filiberto",
-                            Prey = 9,
-                            SecurityRequirement = 1,
-                            Size = 4,
-                            SpaceRequirement = 36.987949151280667,
-                            Species = "Aquatic Animals"
+                            CategoryId = 3,
+                            Dietary = 2,
+                            EnclosureId = 3,
+                            Name = "Jevon",
+                            Prey = 2,
+                            SecurityRequirement = 0,
+                            Size = 5,
+                            SpaceRequirement = 5.710742433160922,
+                            Species = "Pachyderms"
                         },
                         new
                         {
                             Id = 9,
-                            ActivityPattern = 1,
-                            CategoryId = 9,
-                            Dietary = 0,
-                            EnclosureId = 8,
-                            Name = "Vilma",
+                            ActivityPattern = 2,
+                            CategoryId = 1,
+                            Dietary = 2,
+                            EnclosureId = 3,
+                            Name = "Jaquan",
                             Prey = 3,
-                            SecurityRequirement = 0,
-                            Size = 4,
-                            SpaceRequirement = 73.350852445513183,
-                            Species = "Bats"
+                            SecurityRequirement = 1,
+                            Size = 1,
+                            SpaceRequirement = 95.890223980597995,
+                            Species = "Arachnids"
                         },
                         new
                         {
                             Id = 10,
-                            ActivityPattern = 2,
-                            CategoryId = 9,
+                            ActivityPattern = 1,
+                            CategoryId = 4,
                             Dietary = 3,
-                            EnclosureId = 2,
-                            Name = "Muriel",
-                            Prey = 8,
-                            SecurityRequirement = 2,
-                            Size = 2,
-                            SpaceRequirement = 22.775192582709639,
-                            Species = "Crustaceans"
+                            EnclosureId = 6,
+                            Name = "Jermey",
+                            Prey = 1,
+                            SecurityRequirement = 1,
+                            Size = 1,
+                            SpaceRequirement = 69.563248388446652,
+                            Species = "Canines"
                         });
                 });
 
@@ -216,19 +215,17 @@ namespace Dierentuin.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -238,62 +235,62 @@ namespace Dierentuin.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Nulla vel ipsum.",
-                            Name = "Birds"
+                            Description = "Odit eum exercitationem.",
+                            Name = "Aquatic Animals"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Molestiae officia est.",
-                            Name = "Mammals"
+                            Description = "Itaque labore esse.",
+                            Name = "Aquatic Animals"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Est alias iure.",
-                            Name = "Cetaceans"
+                            Description = "Facilis quaerat repellat.",
+                            Name = "Bats"
                         },
                         new
                         {
                             Id = 4,
-                            Description = "Tempora cumque mollitia.",
-                            Name = "Marsupials"
+                            Description = "In dolor reprehenderit.",
+                            Name = "Ungulates"
                         },
                         new
                         {
                             Id = 5,
-                            Description = "Odit excepturi sit.",
-                            Name = "Mustelids"
+                            Description = "Et nihil beatae.",
+                            Name = "Insects"
                         },
                         new
                         {
                             Id = 6,
-                            Description = "Suscipit cumque adipisci.",
-                            Name = "Rodents"
+                            Description = "Voluptatem dolorum tempora.",
+                            Name = "Mustelids"
                         },
                         new
                         {
                             Id = 7,
-                            Description = "Numquam enim aliquid.",
-                            Name = "Marsupials"
+                            Description = "Quaerat eius consectetur.",
+                            Name = "Reptiles"
                         },
                         new
                         {
                             Id = 8,
-                            Description = "Incidunt quisquam nulla.",
-                            Name = "Cetaceans"
+                            Description = "Nam facere hic.",
+                            Name = "Bats"
                         },
                         new
                         {
                             Id = 9,
-                            Description = "Reiciendis debitis impedit.",
-                            Name = "Bovines"
+                            Description = "Enim harum ullam.",
+                            Name = "Rodents"
                         },
                         new
                         {
                             Id = 10,
-                            Description = "Et ut accusantium.",
-                            Name = "Insects"
+                            Description = "Deleniti delectus beatae.",
+                            Name = "Mammals"
                         });
                 });
 
@@ -301,26 +298,24 @@ namespace Dierentuin.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Climate")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Habitat")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("SecurityLevel")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("Size")
-                        .HasColumnType("float");
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -330,92 +325,92 @@ namespace Dierentuin.Migrations
                         new
                         {
                             Id = 1,
-                            Climate = 0,
-                            Habitat = 0,
-                            Name = "Reserve",
+                            Climate = 2,
+                            Habitat = 1,
+                            Name = "Territory",
                             SecurityLevel = 1,
-                            Size = 27.522662727696428
+                            Size = 14.771890186205578
                         },
                         new
                         {
                             Id = 2,
-                            Climate = 2,
+                            Climate = 1,
                             Habitat = 3,
-                            Name = "Dome",
-                            SecurityLevel = 0,
-                            Size = 83.072825068062414
+                            Name = "Pool",
+                            SecurityLevel = 2,
+                            Size = 45.078704872757662
                         },
                         new
                         {
                             Id = 3,
                             Climate = 0,
-                            Habitat = 1,
-                            Name = "House",
+                            Habitat = 2,
+                            Name = "Aviary",
                             SecurityLevel = 0,
-                            Size = 96.36872095566504
+                            Size = 25.972496293230325
                         },
                         new
                         {
                             Id = 4,
-                            Climate = 0,
-                            Habitat = 0,
+                            Climate = 2,
+                            Habitat = 3,
                             Name = "Habitat",
-                            SecurityLevel = 1,
-                            Size = 74.541575605704395
+                            SecurityLevel = 0,
+                            Size = 48.447796497417322
                         },
                         new
                         {
                             Id = 5,
-                            Climate = 1,
-                            Habitat = 1,
-                            Name = "House",
-                            SecurityLevel = 2,
-                            Size = 44.015445261759993
+                            Climate = 0,
+                            Habitat = 2,
+                            Name = "Paddock",
+                            SecurityLevel = 0,
+                            Size = 23.876876249455776
                         },
                         new
                         {
                             Id = 6,
-                            Climate = 1,
-                            Habitat = 1,
-                            Name = "Kooi",
-                            SecurityLevel = 2,
-                            Size = 35.207897451587122
+                            Climate = 2,
+                            Habitat = 2,
+                            Name = "Territory",
+                            SecurityLevel = 1,
+                            Size = 46.042498711809728
                         },
                         new
                         {
                             Id = 7,
-                            Climate = 2,
-                            Habitat = 1,
-                            Name = "Pavilion",
-                            SecurityLevel = 1,
-                            Size = 6.5657923927528081
+                            Climate = 1,
+                            Habitat = 0,
+                            Name = "Grove",
+                            SecurityLevel = 0,
+                            Size = 30.081723610151997
                         },
                         new
                         {
                             Id = 8,
                             Climate = 0,
                             Habitat = 1,
-                            Name = "Enclosure",
-                            SecurityLevel = 0,
-                            Size = 43.350064590647868
+                            Name = "House",
+                            SecurityLevel = 2,
+                            Size = 52.208789955654453
                         },
                         new
                         {
                             Id = 9,
                             Climate = 1,
-                            Habitat = 1,
-                            Name = "Outback",
-                            SecurityLevel = 0,
-                            Size = 11.322536233163754
+                            Habitat = 0,
+                            Name = "Cave",
+                            SecurityLevel = 1,
+                            Size = 83.003769239213298
                         },
                         new
                         {
                             Id = 10,
-                            Climate = 2,
-                            Habitat = 3,
-                            Name = "Island",
-                            SecurityLevel = 2,
-                            Size = 21.247454788938654
+                            Climate = 0,
+                            Habitat = 2,
+                            Name = "Cave",
+                            SecurityLevel = 0,
+                            Size = 2.1855974660035917
                         });
                 });
 
@@ -426,7 +421,7 @@ namespace Dierentuin.Migrations
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("Dierentuin.Models.Enclosure", "Enclosure")
-                        .WithMany("Animal")
+                        .WithMany("Animals")
                         .HasForeignKey("EnclosureId");
 
                     b.Navigation("Category");
@@ -441,7 +436,7 @@ namespace Dierentuin.Migrations
 
             modelBuilder.Entity("Dierentuin.Models.Enclosure", b =>
                 {
-                    b.Navigation("Animal");
+                    b.Navigation("Animals");
                 });
 #pragma warning restore 612, 618
         }

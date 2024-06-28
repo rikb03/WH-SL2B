@@ -10,8 +10,7 @@ namespace Dierentuin.Data
 {
     public class DierentuinContext : DbContext
     {
-        public DierentuinContext (DbContextOptions<DierentuinContext> options)
-            : base(options)
+        public DierentuinContext (DbContextOptions<DierentuinContext> options) : base(options)
         {
         }
 
@@ -74,6 +73,13 @@ namespace Dierentuin.Data
             "Bats"
         };
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            { 
+                optionsBuilder.UseSqlite("Data Source=dierentuin.db");
+            }
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Animal>()
@@ -85,6 +91,27 @@ namespace Dierentuin.Data
                 .HasOne(e => e.Enclosure)
                 .WithMany(e => e.Animals)
                 .HasForeignKey(e => e.EnclosureId);
+
+            modelBuilder.Entity<Animal>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<Animal>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Enclosure>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<Enclosure>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Category>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<Category>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
 
             Seeder(); // Seeding with bogus faker
             
