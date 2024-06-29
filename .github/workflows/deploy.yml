@@ -32,6 +32,9 @@ jobs:
           tags: 
           images: |
             ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+      
+      - name: Restart the pods
+        run: kubectl rollout restart deployment group12 -n group12
 
   post_deployment_verification:
     runs-on: [self-hosted, Linux, ARM64]
