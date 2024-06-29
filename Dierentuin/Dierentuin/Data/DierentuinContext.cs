@@ -77,7 +77,7 @@ namespace Dierentuin.Data
         {
             if (!optionsBuilder.IsConfigured)
             { 
-                optionsBuilder.UseSqlite("Data Source=dierentuin.db");
+                optionsBuilder.UseSqlite("Data Source=Dierentuin.db");
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
