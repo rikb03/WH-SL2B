@@ -1,4 +1,5 @@
 ![Workflow badge](https://github.com/rikb03/WH-SL2B/actions/workflows/multiarch.yml/badge.svg)
+![Workflow badge](https://github.com/rikb03/WH-SL2B/actions/workflows/deploy.yml/badge.svg)
 # WH-SL2B
 # Dierentuin
 
