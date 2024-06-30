@@ -108,6 +108,7 @@ jobs:
       needs: [build]
       env:
         GOSS_FILE: .kube\goss-healthcheck.yaml # Goss path
+        GOSS_DST: /tmp # Goss destination path
 
       steps:
         - name: Checkout code
@@ -120,7 +121,7 @@ jobs:
         - name: Run Goss tests inside Docker container
           run: |
             # Combine all goss files
-            dgoss run ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }}
+            /tmp/dgoss run ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }}
 
   # If the unit tests succeeded, push to dockerhub with latest tag
   push_to_latest:
