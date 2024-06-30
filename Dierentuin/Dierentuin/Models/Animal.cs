@@ -91,9 +91,9 @@ namespace Dierentuin.Models
         {
             return ActivityPattern switch
             {
-                ActivityPatternType.Diurnal => $"{Name} wakes up at sunrise.",
-                ActivityPatternType.Nocturnal => $"{Name} goes to sleep at sunrise.",
-                ActivityPatternType.Cathemeral => $"{Name} is active throughout the day and night.",
+                ActivityPatternType.Diurnal => $"Waking up",
+                ActivityPatternType.Nocturnal => $"Going to sleep",
+                ActivityPatternType.Cathemeral => $"Always active",
                 _ => throw new NotImplementedException()
             };
         }
@@ -103,9 +103,9 @@ namespace Dierentuin.Models
         {
             return ActivityPattern switch
             {
-                ActivityPatternType.Diurnal => $"{Name} goes to sleep at sunset.",
-                ActivityPatternType.Nocturnal => $"{Name} wakes up at sunset.",
-                ActivityPatternType.Cathemeral => $"{Name} is active throughout the day and night.",
+                ActivityPatternType.Diurnal => $"Going to sleep",
+                ActivityPatternType.Nocturnal => $"Waking up",
+                ActivityPatternType.Cathemeral => $"Always active",
                 _ => throw new NotImplementedException()
             };
         }
@@ -120,19 +120,11 @@ namespace Dierentuin.Models
                     if (prey.Category == category && animal != prey)
                     {
 
-                        return $"{animal.Name} eats {prey.Name}.";
+                        return $"Eats prey";
                     }
                 }
             }
-            return Dietary switch
-            {
-                DietaryClassType.Carnivore => $"{Name} eats meat.",
-                DietaryClassType.Herbivore => $"{Name} eats plants.",
-                DietaryClassType.Omnivore => $"{Name} eats both plants and meat.",
-                DietaryClassType.Insectivore => $"{Name} eats insects.",
-                DietaryClassType.Piscivore => $"{Name} eats fish.",
-                _ => throw new NotImplementedException()
-            };
+            return "Eats given food";
         }
 
         // Method to check constraints

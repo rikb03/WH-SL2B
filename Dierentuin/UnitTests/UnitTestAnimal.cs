@@ -76,6 +76,9 @@ namespace UnitTests
             Enclosure kooi = new Enclosure();
             Animal prey = new Animal() { Name = "prey", Category = felis, Enclosure = kooi };
             Animal predator = new Animal() { Name = "predator", Prey = felis.Id, Enclosure = kooi };
+            kooi.Animals = new List<Animal>();
+            kooi.Animals.Add(prey);
+            kooi.Animals.Add(predator);
 
             var result = predator.FeedingTime(kooi, felis, predator);
 
@@ -90,6 +93,9 @@ namespace UnitTests
             Enclosure kooi = new Enclosure();
             Animal notPrey = new Animal() { Name = "notPrey", Category = canis };
             Animal predator = new Animal() { Name = "predator", Prey = canis.Id, Enclosure = kooi, Category = felis };
+            kooi.Animals = new List<Animal>();
+            kooi.Animals.Add(notPrey);
+            kooi.Animals.Add(predator);
 
             var result = predator.FeedingTime(kooi, felis, predator);
 
@@ -102,6 +108,8 @@ namespace UnitTests
             Category felis = new Category(){ Id = 1 };
             Enclosure kooi = new Enclosure();
             Animal predator = new Animal() { Name = "predator", Prey = felis.Id, Enclosure = kooi };
+            kooi.Animals = new List<Animal>();
+            kooi.Animals.Add(predator);
 
             var result = predator.FeedingTime(kooi, felis, predator);
 
