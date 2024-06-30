@@ -38,7 +38,7 @@ namespace Dierentuin.Models
         public string Name { get; set; } // Name of the enclosure
 
         //[Required]
-        public List<Animal> Animal { get; set; } // List of animals in the enclosure
+        public virtual ICollection<Animal> Animals { get; set; }  // List of animals in the category
 
         [Required]
         [EnumDataType(typeof(ClimateType))]
@@ -54,5 +54,25 @@ namespace Dierentuin.Models
 
         [Required]
         public double Size { get; set; } // Size of the enclosure in square meters
+
+        public Dictionary<string, string> Sunset()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, string> Sunrise()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, string> FeedingTime()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, string> CheckConstraint()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

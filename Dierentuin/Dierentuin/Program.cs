@@ -2,11 +2,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using Dierentuin.Data;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<DierentuinContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DierentuinContext") ?? throw new InvalidOperationException("Connection string 'DierentuinContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add DbContext with SQLite
+builder.Services.AddDbContext<DierentuinContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DierentuinContext") ?? throw new InvalidOperationException("Connection string 'DierentuinContext' not found.")));
 
 var app = builder.Build();
 

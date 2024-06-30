@@ -1,43 +1,134 @@
 name: CI - .NET
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - multi-arch-docker-builds/**
+  workflow_dispatch:
+  # push:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, ARM64]
+    # strategy:
+    #   matrix:
+    #     platform: 
+    #       - linux/arm64 
+          # - linux/amd64
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Set tag
-      id: vars
-      run: echo "tag=$(cat multi-arch-docker-builds/Dockerfile | grep 'FROM' | cut -d ':' -f2)" >> $GITHUB_OUTPUT
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
     - name: Set up QEMU
-      uses: docker/setup-qemu-action@v3
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
 
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
-        username: ${{ secrets.DOCKERHUB_USER }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Build and push
       id: docker_build
       uses: docker/build-push-action@v2
       with:
-        context: ./multi-arch-docker-builds
-        file: ./multi-arch-docker-builds/Dockerfile
+        context: .
+        file: ./Dockerfile
         push: true
-        platforms: "linux/arm64,linux/amd64"
-        build-args: |
-          APP_VERSION=1.0.1
-        tags: |
-          ${{ secrets.DOCKERHUB_USER }}/busybox:${{ steps.vars.outputs.tag }}
-          ${{ secrets.DOCKERHUB_USER }}/busybox:latest
+        platforms: linux/amd64,linux/arm64
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+
+
+  # security_scan:
+    # runs-on: [self-hosted, Linux, ARM64]
+    # needs: [ build ]
+
+    # steps:
+    #   - name: Checkout code
+    #     uses: actions/checkout@v2
+
+    #   -
+    #     name: Setup .NET Core
+    #     uses: actions/setup-dotnet@v1
+    #     with:
+    #       dotnet-version: '6.0.x'
+
+    #   - name: Setup Java
+    #     uses: actions/setup-java@v2
+    #     with:
+    #       distribution: 'microsoft' 
+    #       java-version: '17.0.1'
+
+    #   - name: Set up QEMU
+    #     uses: docker/setup-qemu-action@v1
+
+    #   - name: Install dependencies
+    #     run: |
+    #       sudo apt-get update
+    #       sudo apt-get install -y libc6
+          
+    #   -
+    #     name: Install OWASP Dependency-Check
+    #     run: |
+    #       wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.2.0/dependency-check-9.2.0-release.zip
+    #       unzip dependency-check-9.2.0-release.zip
+
+    #   -
+    #     name: Run OWASP Dependency-Check
+    #     run: |
+    #       ./dependency-check/bin/dependency-check.sh --project "Dierentuin_DEVOPS" --scan ./ --out . --format "ALL" --nvdApiKey ${{ secrets.NVD_API_KEY }}
+
+    #   -
+    #     name: Archive vulnerability report
+    #     uses: actions/upload-artifact@v2
+    #     with:
+    #       name: dependency-check-report
+    #       path: dependency-check-report.html
+          
+  unit_testing:
+    runs-on: [self-hosted, Linux, ARM64]
+    needs: [build]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Test with the dotnet CLI
+        run: dotnet test ./Dierentuin/UnitTests/UnitTests.csproj
+
+  # If the unit tests succeeded, push to dockerhub with latest tag
+  push_to_latest:
+    runs-on: [self-hosted, Linux, ARM64]
+    # needs: [unit_testing]
+    needs: [build]
+
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Get the docker image that was built in the build job
+      - name: Pull Docker image
+        run: |
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }}
+
+      # Change the tag of the docker image to latest
+      - name: Tag Docker image with new tag
+        run: |
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }} ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+
+      # Push the docker image with the new tag
+      - name: Push Docker image with new tag
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
+  
