@@ -105,7 +105,7 @@ jobs:
 
   goss_healthcheck:
       runs-on: [self-hosted, Linux, ARM64]
-      needs: [deploy]
+      needs: [build, unit_testing]
       env:
         GOSS_FILE: .kube\goss-healthcheck.yaml # Goss path
 
