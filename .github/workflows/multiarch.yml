@@ -39,7 +39,6 @@ jobs:
         push: true
         platforms: linux/amd64,linux/arm64
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }}
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
 
 
   # security_scan:
@@ -103,6 +102,25 @@ jobs:
 
       - name: Test with the dotnet CLI
         run: dotnet test ./Dierentuin/UnitTests/UnitTests.csproj
+
+  goss_healthcheck:
+      runs-on: [self-hosted, Linux, ARM64]
+      needs: [deploy]
+      env:
+      GOSS_FILE: .kube\goss-healthcheck.yaml # Goss path
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Install Goss
+          run: |
+            curl -fsSL https://goss.rocks/install | sh
+
+        - name: Run Goss tests inside Docker container
+          run: |
+            # Combine all goss files
+            dgoss run ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }}
 
   # If the unit tests succeeded, push to dockerhub with latest tag
   push_to_latest:
