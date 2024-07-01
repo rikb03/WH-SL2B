@@ -29,7 +29,6 @@ jobs:
             .kube/deployment.yaml
             .kube/ingress.yaml
             .kube/service.yaml
-          tags: 
           images: |
             ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
       
@@ -58,12 +57,11 @@ jobs:
             .kube/prometheus-ingress.yaml
             .kube/prometheus-deployment.yaml
             .kube/prometheus-service.yaml
-          tags: 
           images: |
             prom/prometheus:latest
 
   deploy_grafana:
-    name: Deploy Prometheus to Kubernetes
+    name: Deploy Grafana to Kubernetes
     runs-on: [self-hosted, Linux, ARM64]
     steps:
       - name: Set up kubectl
@@ -83,7 +81,6 @@ jobs:
             .grafana/grafana.yaml
             .grafana/grafana-ingress.yaml
             .grafana/grafana-config.yaml
-          tags: 
           images: |
             grafana/grafana:latest
 
