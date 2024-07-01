@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: grafana
+  name: group12-grafana
+  namespace: group12
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: group12-grafana
+  template:
+    metadata:
+      labels:
+        app: group12-grafana
+    spec:
+      securityContext:
+        fsGroup: 472
+        supplementalGroups:
+          - 0
+      containers:
+        - name: grafana
+          image: grafana/grafana:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+          - name: GF_SERVER_ROOT_URL
+            value: https://12.web.dops.tech/grafana
+          - name: GF_SERVER_SERVE_FROM_SUB_PATH
+            value: "true"
+          - name: GF_ANALYTICS_REPORTING_ENABLED
+            value: "false"
+          - name: GF_SECURITY_COOKIE_SECURE
+            value: "true"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: grafana-config
+              mountPath: /etc/grafana
+            - name: grafana-provisioning-dashboards
+              mountPath: /etc/grafana/provisioning/dashboards
+            - name: grafana-provisioning-datasources
+              mountPath: /etc/grafana/provisioning/datasources
+      volumes:
+        - name: grafana-config
+          configMap:
+            name: grafana-configmap
+        - name: grafana-provisioning-dashboards
+          configMap:
+            defaultMode: 420
+            name: grafana-provisioning-dashboards-configmap
+        - name: grafana-provisioning-datasources
+          configMap:
+            defaultMode: 420
+            name: grafana-provisioning-datasources-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-service
+  namespace: group12
+spec:
+  ports:
+    - name: web
+      port: 8080
+      targetPort: 3000
+  selector:
+    app: group12-grafana
+  sessionAffinity: None

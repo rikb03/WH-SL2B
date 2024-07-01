@@ -62,9 +62,34 @@ jobs:
           images: |
             prom/prometheus:latest
 
+  deploy_grafana:
+    name: Deploy Prometheus to Kubernetes
+    runs-on: [self-hosted, Linux, ARM64]
+    steps:
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: Set Kubernetes context
+        uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG_CONTENTS }}
+
+      - name: Deploy to the Kubernetes cluster
+        uses: azure/k8s-deploy@v1
+        with:
+          namespace: group12
+          manifests: |
+            .grafana/grafana.yaml
+            .grafana/grafana-ingress.yaml
+            .grafana/grafana-config.yaml
+          tags: 
+          images: |
+            grafana/grafana:latest
+
   post_deployment_verification:
     runs-on: [self-hosted, Linux, ARM64]
-    needs: [ deploy_dierentuin ]
+    needs: [ deploy_dierentuin, deploy_prometheus, deploy_grafana]
 
     steps:
       - name: Perform smoke tests
