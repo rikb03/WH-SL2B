@@ -115,5 +115,57 @@ namespace UnitTests
 
             Assert.Equal("Eats given food", result);
         }
+
+        [Fact]
+        public void CheckConstraint_SpaceSufficient_SecurityAdequate_ShouldBothReturnTrue()
+        {
+            Enclosure kooi = new Enclosure() { Size = 100, SecurityLevel = Enclosure.SecurityLevelType.Medium };
+            Animal animal = new Animal() { SpaceRequirement = 50, SecurityRequirement = Enclosure.SecurityLevelType.Medium };
+            kooi.Animals = new List<Animal>();
+            kooi.Animals.Add(animal);
+
+            var result = animal.CheckConstraint(kooi);
+
+            Assert.Equal("Space sufficient: True, Security adequate: True", result);
+        }
+
+        [Fact]
+        public void CheckConstraint_SpaceInSufficient_SecurityInAdequate_ShouldBothReturnFalse()
+        {
+            Enclosure kooi = new Enclosure() { Size = 50, SecurityLevel = Enclosure.SecurityLevelType.Medium };
+            Animal animal = new Animal() { SpaceRequirement = 75, SecurityRequirement = Enclosure.SecurityLevelType.Low };
+            kooi.Animals = new List<Animal>();
+            kooi.Animals.Add(animal);
+
+            var result = animal.CheckConstraint(kooi);
+
+            Assert.Equal("Space sufficient: False, Security adequate: False", result);
+        }
+
+        [Fact]
+        public void CheckConstraint_SpaceSufficient_ShouldReturnTrue_SecurityInAdequate_ShouldBothReturnFalse()
+        {
+            Enclosure kooi = new Enclosure() { Size = 100, SecurityLevel = Enclosure.SecurityLevelType.Medium };
+            Animal animal = new Animal() { SpaceRequirement = 50, SecurityRequirement = Enclosure.SecurityLevelType.Low };
+            kooi.Animals = new List<Animal>();
+            kooi.Animals.Add(animal);
+
+            var result = animal.CheckConstraint(kooi);
+
+            Assert.Equal("Space sufficient: True, Security adequate: False", result);
+        }
+
+        [Fact]
+        public void CheckConstraint_SpaceSufficient_ShouldReturnFalse_SecurityInAdequate_ShouldBothReturnTrue()
+        {
+            Enclosure kooi = new Enclosure() { Size = 100, SecurityLevel = Enclosure.SecurityLevelType.Medium };
+            Animal animal = new Animal() { SpaceRequirement = 110, SecurityRequirement = Enclosure.SecurityLevelType.Medium };
+            kooi.Animals = new List<Animal>();
+            kooi.Animals.Add(animal);
+
+            var result = animal.CheckConstraint(kooi);
+
+            Assert.Equal("Space sufficient: False, Security adequate: True", result);
+        }
     }
 }
