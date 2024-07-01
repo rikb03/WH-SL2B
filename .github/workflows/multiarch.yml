@@ -39,7 +39,6 @@ jobs:
         push: true
         platforms: linux/amd64,linux/arm64
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }}
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
 
 
   # security_scan:
