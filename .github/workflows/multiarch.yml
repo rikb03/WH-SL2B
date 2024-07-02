@@ -1,19 +1,12 @@
 name: CI - .NET
 on:
   workflow_dispatch:
-  # push:
   pull_request:
     types: [opened, reopened, edited, synchronize]
 
 jobs:
   build:
     runs-on: [self-hosted, Linux, ARM64]
-    # strategy:
-    #   matrix:
-    #     platform: 
-    #       - linux/arm64 
-          # - linux/amd64
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -42,50 +35,36 @@ jobs:
 
 
   # security_scan:
-    # runs-on: [self-hosted, Linux, ARM64]
-    # needs: [ build ]
+  #   runs-on: ubuntu-latest
+  #   needs: [ build ]
 
-    # steps:
-    #   - name: Checkout code
-    #     uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-    #   -
-    #     name: Setup .NET Core
-    #     uses: actions/setup-dotnet@v1
-    #     with:
-    #       dotnet-version: '6.0.x'
+  #     -
+  #       name: Setup .NET Core
+  #       uses: actions/setup-dotnet@v1
+  #       with:
+  #         dotnet-version: '6.0.x'
 
-    #   - name: Setup Java
-    #     uses: actions/setup-java@v2
-    #     with:
-    #       distribution: 'microsoft' 
-    #       java-version: '17.0.1'
+  #     -
+  #       name: Install OWASP Dependency-Check
+  #       run: |
+  #         wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.2.0/dependency-check-9.2.0-release.zip
+  #         unzip dependency-check-9.2.0-release.zip
 
-    #   - name: Set up QEMU
-    #     uses: docker/setup-qemu-action@v1
+  #     -
+  #       name: Run OWASP Dependency-Check
+  #       run: |
+  #         ./dependency-check/bin/dependency-check.sh --project "Dierentuin_DEVOPS" --scan ./ --out . --format "ALL" --nvdApiKey ${{ secrets.NVD_API_KEY }}
 
-    #   - name: Install dependencies
-    #     run: |
-    #       sudo apt-get update
-    #       sudo apt-get install -y libc6
-          
-    #   -
-    #     name: Install OWASP Dependency-Check
-    #     run: |
-    #       wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.2.0/dependency-check-9.2.0-release.zip
-    #       unzip dependency-check-9.2.0-release.zip
-
-    #   -
-    #     name: Run OWASP Dependency-Check
-    #     run: |
-    #       ./dependency-check/bin/dependency-check.sh --project "Dierentuin_DEVOPS" --scan ./ --out . --format "ALL" --nvdApiKey ${{ secrets.NVD_API_KEY }}
-
-    #   -
-    #     name: Archive vulnerability report
-    #     uses: actions/upload-artifact@v2
-    #     with:
-    #       name: dependency-check-report
-    #       path: dependency-check-report.html
+  #     -
+  #       name: Archive vulnerability report
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: dependency-check-report
+  #         path: dependency-check-report.html
           
   unit_testing:
     runs-on: [self-hosted, Linux, ARM64]
@@ -105,7 +84,7 @@ jobs:
 
   goss_healthcheck:
       runs-on: [self-hosted, Linux, ARM64]
-      needs: [build]
+      needs: [build, unit_testing]
       env:
         GOSS_FILE: .kube/goss-healthcheck.yaml # Goss path
         GOSS_DST: /tmp # Goss destination path
@@ -126,8 +105,7 @@ jobs:
   # If the unit tests succeeded, push to dockerhub with latest tag
   push_to_latest:
     runs-on: [self-hosted, Linux, ARM64]
-    # needs: [unit_testing]
-    needs: [build]
+    needs: [build, unit_testing]
 
     steps:
       - name: Login to DockerHub
@@ -150,4 +128,3 @@ jobs:
       - name: Push Docker image with new tag
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:latest
-  
