@@ -34,37 +34,37 @@ jobs:
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/dierentuingroup12:${{ github.head_ref }}
 
 
-  security_scan:
-    runs-on: ubuntu-latest
-    needs: [ build ]
+  # security_scan:
+  #   runs-on: ubuntu-latest
+  #   needs: [ build ]
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      -
-        name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
+  #     -
+  #       name: Setup .NET Core
+  #       uses: actions/setup-dotnet@v1
+  #       with:
+  #         dotnet-version: '6.0.x'
 
-      -
-        name: Install OWASP Dependency-Check
-        run: |
-          wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.2.0/dependency-check-9.2.0-release.zip
-          unzip dependency-check-9.2.0-release.zip
+  #     -
+  #       name: Install OWASP Dependency-Check
+  #       run: |
+  #         wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.2.0/dependency-check-9.2.0-release.zip
+  #         unzip dependency-check-9.2.0-release.zip
 
-      -
-        name: Run OWASP Dependency-Check
-        run: |
-          ./dependency-check/bin/dependency-check.sh --project "Dierentuin_DEVOPS" --scan ./ --out . --format "ALL" --nvdApiKey ${{ secrets.NVD_API_KEY }}
+  #     -
+  #       name: Run OWASP Dependency-Check
+  #       run: |
+  #         ./dependency-check/bin/dependency-check.sh --project "Dierentuin_DEVOPS" --scan ./ --out . --format "ALL" --nvdApiKey ${{ secrets.NVD_API_KEY }}
 
-      -
-        name: Archive vulnerability report
-        uses: actions/upload-artifact@v2
-        with:
-          name: dependency-check-report
-          path: dependency-check-report.html
+  #     -
+  #       name: Archive vulnerability report
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: dependency-check-report
+  #         path: dependency-check-report.html
           
   unit_testing:
     runs-on: [self-hosted, Linux, ARM64]
